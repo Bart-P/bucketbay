@@ -18,7 +18,7 @@
         </div>
 
         <div class="modal-body">
-          ...
+          todo - modal mit preview ausarbeiten
         </div>
 
         <div class="modal-footer">
