@@ -21,5 +21,5 @@ Route::get('/', [ItemController::class, 'index']);
 Route::get('/grafics', [GraficController::class, 'grafics']);
 
 Route::resources([
-  'addresses' => AddressController::class,
+    'addresses' => AddressController::class,
 ]);

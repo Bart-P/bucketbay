@@ -8,23 +8,22 @@ use Livewire\WithPagination;
 
 class GraficsTable extends Component
 {
+    use WithPagination;
+    protected string $paginationTheme = 'bootstrap';
 
-  use WithPagination;
-  protected string $paginationTheme = 'bootstrap';
+    public int $itemsPerPage = 10;
+    public string $search = '';
+    public int $selected_image_id = 0;
 
-  public int $itemsPerPage = 10;
-  public string $search = '';
-  public int $selected_image_id = 0;
+    public function render()
+    {
+        return view('livewire.grafics-table', [
+            'grafics' => Grafic::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage)
+        ]);
+    }
 
-  public function render()
-  {
-    return view('livewire.grafics-table', [
-      'grafics' => Grafic::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage)
-    ]);
-  }
-
-  public function deleteConfirmation($image_id)
-  {
-    $this->selected_image_id = $image_id;
-  }
+    public function deleteConfirmation($image_id)
+    {
+        $this->selected_image_id = $image_id;
+    }
 }

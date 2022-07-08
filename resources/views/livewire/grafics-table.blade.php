@@ -58,6 +58,7 @@
                         <button class="btn btn-outline-success m-1 m-sm-0">
                             <i class="bi-basket3-fill"></i>
                         </button>
+
                         <button class="btn btn-outline-danger m-1 m-sm-0" data-bs-toggle="modal"
                             data-bs-target="#deleteConfirmationModal"
                             wire:click="deleteConfirmation({{ $grafic->id }})">
