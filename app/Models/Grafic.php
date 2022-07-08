@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Grafic extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  public static function search($search)
-  {
-    return empty($search) ? static::query()
-      : static::query()
-      ->where('name', 'like', '%' . $search . '%');
-  }
+    public static function search($search)
+    {
+        return empty($search) ? static::query()
+        : static::query()->where('name', 'like', '%' . $search . '%');
+    }
 }
