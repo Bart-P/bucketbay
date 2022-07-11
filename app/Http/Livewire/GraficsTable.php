@@ -15,6 +15,11 @@ class GraficsTable extends Component
     public string $search = '';
     public int $selected_image_id = 0;
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         return view('livewire.grafics-table', [
