@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ItemController::class, 'index']);
+Route::get('/login', fn () => view('login'));
 
 Route::get('/grafics', [GraficController::class, 'grafics']);
 
