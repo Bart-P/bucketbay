@@ -20,6 +20,11 @@ class GraficsTable extends Component
         $this->resetPage();
     }
 
+    public function updatedItemsPerPage()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         return view('livewire.grafics-table', [

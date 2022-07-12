@@ -20,6 +20,11 @@ class AddressesTable extends Component
         $this->resetPage();
     }
 
+    public function updatedItemsPerPage()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         return view('livewire.addresses-table', [
