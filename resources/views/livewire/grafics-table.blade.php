@@ -73,7 +73,7 @@
         {{ $grafics->links() }}
         <div class="mb-3">
             <select wire:model="itemsPerPage" name="perPageCount" class="form-select form-select-sm fs-5">
-                <option selected="15">15</option>
+                <option selected="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
