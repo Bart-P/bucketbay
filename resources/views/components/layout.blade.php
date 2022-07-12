@@ -45,8 +45,11 @@
                 </ul>
 
                 <div class="col-lg-3 text-end">
-                    <button type="button" class="btn btn-outline-primary me-2">
-                        Logout
+                    <button type="button" class="btn rounded-circle btn-primary">
+                        <i class="bi bi-person-fill"></i>
+                    </button>
+                    <button type="button" class="btn rounded-circle btn-secondary me-2">
+                        <i class="bi bi-box-arrow-right"></i>
                     </button>
                 </div>
             </nav>
