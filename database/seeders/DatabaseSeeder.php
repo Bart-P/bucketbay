@@ -7,6 +7,7 @@ use App\Models\Grafic;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +25,22 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::factory(4)->create();
+        User::create([
+            'name' => 'Bartek',
+            'email' => 'bar-p@wp.pl',
+            'password' => bcrypt('asdf'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+        ]);
+
+        User::create([
+            'name' => 'Daniel',
+            'email' => 'da@ni.el',
+            'password' => bcrypt('asdf'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+        ]);
+
         Grafic::factory(15)->create();
         Address::factory(50)->create();
 
