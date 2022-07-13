@@ -44,14 +44,15 @@
                     </li>
                 </ul>
 
-                <div class="col-lg-3 text-end">
+                <form method="post" action="/logout" class="col-lg-3 text-end">
+                    @csrf
                     <button type="button" class="btn rounded-circle btn-primary">
                         <i class="bi bi-person-fill"></i>
                     </button>
-                    <button type="button" class="btn rounded-circle btn-secondary me-2">
+                    <button type="submit" class="btn rounded-circle btn-secondary me-2">
                         <i class="bi bi-box-arrow-right"></i>
                     </button>
-                </div>
+                </form>
             </nav>
         @endif
     </header>
