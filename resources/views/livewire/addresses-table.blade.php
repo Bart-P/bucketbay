@@ -53,20 +53,22 @@
                     <td>{{ $address->city }}</td>
                     <td>{{ $address->city_code }}</td>
                     <td>{{ $address->country }}</td>
-                    <td style="min-width: 180px;">
-                        <button class="btn btn-outline-success m-1 m-sm-0">
-                            <i class="bi-basket3-fill"></i>
-                        </button>
+                    <td style="">
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-success">
+                                <i class="bi-basket3-fill"></i>
+                            </button>
 
-                        <a class="btn btn-outline-primary m-1 m-sm-0" href="/addresses/{{ $address->id }}/edit">
-                            <i class="bi-pencil"></i>
-                        </a>
+                            <a class="btn btn-outline-primary" href="/addresses/{{ $address->id }}/edit">
+                                <i class="bi-pencil"></i>
+                            </a>
 
-                        <button class="btn btn-outline-danger m-1 m-sm-0" data-bs-toggle="modal"
-                            data-bs-target="#deleteConfirmationModal"
-                            wire:click="deleteConfirmation({{ $address->id }})">
-                            <i class="bi-trash"></i>
-                        </button>
+                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteConfirmationModal"
+                                wire:click="deleteConfirmation({{ $address->id }})">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             @endforeach
