@@ -14,16 +14,16 @@ return new class () extends Migration {
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id');
             $table->string('name1');
-            $table->string('name2');
-            $table->string('name3');
+            $table->string('name2')->nullable();
+            $table->string('name3')->nullable();
             $table->string('street');
             $table->string('street_nr');
             $table->string('city');
             $table->string('city_code');
             $table->string('country');
-            $table->mediumText('address_info');
-            $table->string('user_id');
+            $table->mediumText('address_info')->nullable();
             $table->timestamps();
         });
     }
