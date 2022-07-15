@@ -54,16 +54,22 @@
                     </td>
                     <td>{{ $grafic->name }}</td>
                     <td>{{ $grafic->type }}</td>
-                    <td>
-                        <button class="btn btn-outline-success m-1 m-sm-0">
-                            <i class="bi-basket3-fill"></i>
-                        </button>
+                    <td class="">
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-success">
+                                <i class="bi-basket3-fill"></i>
+                            </button>
 
-                        <button class="btn btn-outline-danger m-1 m-sm-0" data-bs-toggle="modal"
-                            data-bs-target="#deleteConfirmationModal"
-                            wire:click="deleteConfirmation({{ $grafic->id }})">
-                            <i class="bi-trash"></i>
-                        </button>
+                            <button class="btn btn-outline-success">
+                                <i class="bi-download"></i>
+                            </button>
+
+                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteConfirmationModal"
+                                wire:click="deleteConfirmation({{ $grafic->id }})">
+                                <i class="bi-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             @endforeach
