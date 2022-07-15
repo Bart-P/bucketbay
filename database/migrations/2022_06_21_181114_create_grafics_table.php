@@ -14,10 +14,10 @@ return new class () extends Migration {
     {
         Schema::create('grafics', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->bigInteger('user_id');
+            $table->string('name')->unique();
             $table->string('file');
             $table->string('type');
-            $table->string('user_id');
             $table->timestamps();
         });
     }
