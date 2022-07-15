@@ -18,10 +18,10 @@ class GraficFactory extends Factory
     public function definition()
     {
         return [
-      'name' => $this->faker->text(5) . ' logo',
-      'file' => 'placeholder_150x100.png',
-      'type' => $this->faker->text(10),
-      'user_id' => User::all()->random()->id,
-    ];
+            'user_id' => User::all()->random()->id,
+            'name' => $this->faker->unique()->company,
+            'file' => 'placeholder_150x100.png',
+            'type' => $this->faker->text(10),
+        ];
     }
 }
