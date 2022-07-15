@@ -34,4 +34,7 @@ class UserController extends Controller
 
         return redirect('/login');
     }
+
+    // TODO create edit user page for the user to change invoice address, change mail, password etc.
+    // TODO also reset password link? Is there a package to handle that?
 }
