@@ -21,21 +21,27 @@ class AddressController extends Controller
 
     public function store()
     {
-        $form_fields = request()->validate([
-            'name1' => ['required', Rule::unique('addresses', 'name1')],
-            'name2' => '',
-            'name3' => '',
-            'street' => 'required',
-            'street_nr' => 'required',
-            'city' => 'required',
-            'city_code' => 'required',
-            'country' => 'required',
-            'address_info' => '',
-        ]);
+        if (auth()->user()->id) {
+            $user_id = (string)auth()->user()->id;
+            $form_fields = request()->validate([
+                'name1' => ['required', Rule::unique('addresses', 'name1')],
+                'name2' => '',
+                'name3' => '',
+                'street' => 'required',
+                'street_nr' => 'required',
+                'city' => 'required',
+                'city_code' => 'required',
+                'country' => 'required',
+                'address_info' => '',
+                'user_id' => $user_id,
+            ]);
 
-        Address::create($form_fields);
+            $form_fields['user_id'] = $user_id;
 
-        return redirect('/addresses')->with('success_msg', 'Adresse hinzugefügt!');
+            Address::create($form_fields);
+
+            return redirect('/addresses')->with('success_msg', 'Adresse hinzugefügt!');
+        }
     }
 
     public function edit(Address $address)
