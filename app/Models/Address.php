@@ -9,6 +9,8 @@ class Address extends Model
 {
     use HasFactory;
 
+    private static string $searchTerm;
+
     protected $fillable = [
         'name1',
         'name2',
@@ -18,15 +20,32 @@ class Address extends Model
         'city',
         'city_code',
         'country',
-        'address_info'
+        'address_info',
+        'user_id'
     ];
+
+    public function setSearchTerm($searchTerm)
+    {
+        $this->searchTerm = $searchTerm;
+    }
 
     public static function search($search)
     {
-        return empty($search) ? static::query()
-        : static::query()
-        ->where('name1', 'like', '%' . $search . '%')
-        ->orWhere('name2', 'like', '%' . $search . '%')
-        ->orWhere('name3', 'like', '%' . $search . '%');
+        Address::$searchTerm = $search;
+        $query = static::query()->whereBelongsTo(auth()->user());
+
+        return empty($search)
+            ? $query
+            : $query
+                ->where(function ($q) {
+                    $q->where('name1', 'like', '%' . Address::$searchTerm . '%')
+                    ->orwhere('name2', 'like', '%' . Address::$searchTerm . '%')
+                    ->orwhere('name3', 'like', '%' . Address::$searchTerm . '%');
+                });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
