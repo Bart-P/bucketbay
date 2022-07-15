@@ -11,7 +11,15 @@ class Grafic extends Model
 
     public static function search($search)
     {
-        return empty($search) ? static::query()
-        : static::query()->where('name', 'like', '%' . $search . '%');
+        $query = static::query()->whereBelongsTo(auth()->user());
+        return empty($search) ? $query
+        : $query->where('name', 'like', '%' . $search . '%');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // TODO data upload via spatie laravel media package?
 }
