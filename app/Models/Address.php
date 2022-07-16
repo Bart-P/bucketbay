@@ -24,23 +24,18 @@ class Address extends Model
         'user_id'
     ];
 
-    public function setSearchTerm($searchTerm)
-    {
-        $this->searchTerm = $searchTerm;
-    }
-
     public static function search($search)
     {
-        Address::$searchTerm = $search;
+        static::$searchTerm = $search;
         $query = static::query()->whereBelongsTo(auth()->user());
 
         return empty($search)
             ? $query
             : $query
                 ->where(function ($q) {
-                    $q->where('name1', 'like', '%' . Address::$searchTerm . '%')
-                    ->orwhere('name2', 'like', '%' . Address::$searchTerm . '%')
-                    ->orwhere('name3', 'like', '%' . Address::$searchTerm . '%');
+                    $q->where('name1', 'like', '%' . static::$searchTerm . '%')
+                    ->orwhere('name2', 'like', '%' . static::$searchTerm . '%')
+                    ->orwhere('name3', 'like', '%' . static::$searchTerm . '%');
                 });
     }
 
