@@ -23,10 +23,9 @@ Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [ItemController::class, 'index']);
-
     Route::post('/logout', [UserController::class, 'logout']);
-
     Route::get('/grafics', [GraficController::class, 'grafics']);
+    Route::post('/grafics', [GraficController::class, 'store']);
 
     Route::resources([
         'addresses' => AddressController::class,
