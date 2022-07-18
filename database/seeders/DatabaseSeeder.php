@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        Grafic::factory(100)->create();
+        Grafic::factory(10)->create();
         Address::factory(100)->create();
 
         Item::create([
