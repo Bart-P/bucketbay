@@ -17,7 +17,6 @@ return new class () extends Migration {
             $table->bigInteger('user_id');
             $table->string('name')->unique();
             $table->string('file');
-            $table->string('type');
             $table->timestamps();
         });
     }
