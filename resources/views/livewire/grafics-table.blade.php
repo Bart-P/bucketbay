@@ -17,19 +17,27 @@
                     </h5>
                 </div>
 
-                <div class="modal-body">
-                    TODO - modal mit preview ausarbeiten
-                </div>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body d-flex flex-column gap-3">
+                        <div class="input-group">
+                            <label for="fileName" class="input-group-text">Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <input type="file" class="form-control" name="file">
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Abbrechen
-                    </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Abbrechen
+                        </button>
 
-                    <button type="button" class="btn btn-outline-primary">
-                        Speichern
-                    </button>
-                </div>
+                        <button type="submit" class="btn btn-outline-primary">
+                            Speichern
+                        </button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
