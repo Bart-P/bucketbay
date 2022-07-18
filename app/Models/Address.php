@@ -12,6 +12,7 @@ class Address extends Model
     private static string $searchTerm;
 
     protected $fillable = [
+        'user_id',
         'name1',
         'name2',
         'name3',
@@ -21,13 +22,12 @@ class Address extends Model
         'city_code',
         'country',
         'address_info',
-        'user_id'
     ];
 
     public static function search($search)
     {
         static::$searchTerm = $search;
-        $query = static::query()->whereBelongsTo(auth()->user());
+        $query = static::whereBelongsTo(auth()->user());
 
         return empty($search)
             ? $query
