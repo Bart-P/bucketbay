@@ -9,17 +9,21 @@ class Grafic extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'name',
+        'file',
+    ];
+
     public static function search($search)
     {
-        $query = static::query()->whereBelongsTo(auth()->user());
+        $query = static::whereBelongsTo(auth()->user());
         return empty($search) ? $query
-        : $query->where('name', 'like', '%' . $search . '%');
+            : $query->where('name', 'like', '%' . $search . '%');
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    // TODO data upload via spatie laravel media package?
 }
