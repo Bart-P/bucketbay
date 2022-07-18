@@ -24,6 +24,7 @@ class AddressController extends Controller
         if (auth()->user()->id) {
             $user_id = (string)auth()->user()->id;
             $form_fields = request()->validate([
+                'user_id' => $user_id,
                 'name1' => ['required', Rule::unique('addresses', 'name1')],
                 'name2' => '',
                 'name3' => '',
@@ -33,7 +34,6 @@ class AddressController extends Controller
                 'city_code' => 'required',
                 'country' => 'required',
                 'address_info' => '',
-                'user_id' => $user_id,
             ]);
 
             $form_fields['user_id'] = $user_id;
