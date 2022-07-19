@@ -14,15 +14,17 @@ class GraficController extends Controller
 
     public function store()
     {
-        // TODO symlink folder to public
-        // TODO create the preview for grafics
-        $fileName = request()->file('file')->store('grafics');
+        // TODO add size and type info to DB and save it
+        // alternative is to take this date from the file itself? Which is better and why?
+        $fileName = request()->file('file')->store('public/grafics');
         if ($fileName && auth()->user()->id) {
             $form_fields = request()->validate([
                 'name' => ['required', Rule::unique('grafics', 'name')],
             ]);
 
             $form_fields['user_id'] = auth()->user()->id;
+            $fileNameArray = explode('/', $fileName);
+            $fileName = array_pop($fileNameArray);
             $form_fields['file'] = $fileName;
 
             Grafic::create($form_fields);
