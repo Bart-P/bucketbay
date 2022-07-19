@@ -48,37 +48,39 @@
                 <th scope="col">#</th>
                 <th scope="col">Logo</th>
                 <th scope="col">Name</th>
-                <th scope="col">Typ</th>
                 <th scope="col"></th>
             </tr>
         </thead>
 
         <tbody>
             @foreach ($grafics as $grafic)
-                <tr>
-                    <th scope="row">{{ $grafic->id }}</th>
-                    <td>
+                <th scope="row">{{ $grafic->id }}</th>
+                <td>
+                    @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
+                        <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
+                            class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;" />
+                    @else
                         <img src="{{ asset('images/' . $grafic->file) }}" alt="logo" class="rounded-2" />
-                    </td>
-                    <td>{{ $grafic->name }}</td>
-                    <td>{{ $grafic->type }}</td>
-                    <td class="">
-                        <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-success">
-                                <i class="bi-basket3-fill"></i>
-                            </button>
+                    @endif
+                </td>
+                <td>{{ $grafic->name }}</td>
+                <td class="">
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-success">
+                            <i class="bi-basket3-fill"></i>
+                        </button>
 
-                            <button class="btn btn-outline-success">
-                                <i class="bi-download"></i>
-                            </button>
+                        <button class="btn btn-outline-success">
+                            <i class="bi-download"></i>
+                        </button>
 
-                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteConfirmationModal"
-                                wire:click="deleteConfirmation({{ $grafic->id }})">
-                                <i class="bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#deleteConfirmationModal"
+                            wire:click="deleteConfirmation({{ $grafic->id }})">
+                            <i class="bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
                 </tr>
             @endforeach
         </tbody>
