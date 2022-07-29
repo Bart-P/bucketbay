@@ -35,6 +35,7 @@ class GraficController extends Controller
 
             return redirect('/grafics')->with('success_msg', 'Datei wurde hochgeladen');
         };
+        return redirect('/grafics')->with('failed_msg', 'Datei wurde konnte nicht Hochgeladen werden!');
     }
 
     public function destroy($selectedImageId)
