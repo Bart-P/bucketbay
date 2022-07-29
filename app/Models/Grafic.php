@@ -13,6 +13,8 @@ class Grafic extends Model
         'user_id',
         'name',
         'file',
+        'type',
+        'size_in_mb',
     ];
 
     public static function search($search)

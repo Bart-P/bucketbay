@@ -21,6 +21,8 @@ class GraficFactory extends Factory
             'user_id' => User::all()->random()->id,
             'name' => $this->faker->unique()->company,
             'file' => 'placeholder_150x100.png',
+            'type' => 'png',
+            'size_in_mb' => $this->faker->randomFloat(2, 0.1, 5),
         ];
     }
 }

@@ -17,6 +17,8 @@ return new class () extends Migration {
             $table->bigInteger('user_id');
             $table->string('name')->unique();
             $table->string('file');
+            $table->string('type');
+            $table->string('size_in_mb');
             $table->timestamps();
         });
     }
