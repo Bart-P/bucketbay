@@ -22,6 +22,7 @@
 
     <main class="h-100">
         {{ $slot }}
+        <x-notification-msg></x-notification-msg>
     </main>
 
     <footer>

@@ -67,9 +67,11 @@ class AddressController extends Controller
 
         $address->updateTimestamps();
 
-        $address->update($address_fields);
+        if ($address->update($address_fields)) {
+            return redirect('/addresses')->with('success_msg', 'Adresse erfolgreich bearbeitet!');
+        };
 
-        return redirect('/addresses')->with('success_msg', 'Adresse erfolgreich bearbeitet!');
+        return redirect('/addresses')->with('failed_msg', 'Adresse konnte nicht bearbeitet werden!');
     }
 
     public function destroy($address_id)

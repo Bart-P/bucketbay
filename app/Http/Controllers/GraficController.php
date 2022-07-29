@@ -44,7 +44,7 @@ class GraficController extends Controller
             Grafic::destroy($selectedImageId);
             return redirect('/grafics')->with('success_msg', 'Die datei wurde gelöscht!');
         };
-        return redirect('/grafics')->with('success_msg', 'Datei konnte nicht gelöscht werden!');
+        return redirect('/grafics')->with('failed_msg', 'Datei konnte nicht gelöscht werden!');
     }
 
     public function update(Grafic $grafic)
@@ -55,7 +55,9 @@ class GraficController extends Controller
 
         $grafic->updateTimestamps();
         if ($grafic->update($grafic_fields)) {
-            return redirect('/grafics')->with('success_msg', 'Addresse geändert!');
+            return redirect('/grafics')->with('success_msg', 'Grafic geändert!');
         }
+
+        return redirect('/grafics')->with('failed_msg', 'Grafic konte nicht geändert werden!');
     }
 }

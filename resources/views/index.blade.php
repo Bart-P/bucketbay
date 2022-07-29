@@ -7,7 +7,7 @@
             man Produkte bestellt und was zu beachten ist.
     </x-banner>
 
-    <x-success-msg></x-success-msg>
+    <x-notification-msg></x-notification-msg>
 
     <div class="container">
         <div class="row g-3">
