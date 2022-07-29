@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Grafic;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -35,5 +36,10 @@ class GraficsTable extends Component
     public function deleteConfirmation($imageId)
     {
         $this->selectedImageId = $imageId;
+    }
+
+    public function downloadFile(string $fileName)
+    {
+        return Storage::download('public/grafics/' . $fileName);
     }
 }

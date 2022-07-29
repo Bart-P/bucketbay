@@ -123,8 +123,8 @@
                             <i class="bi-basket3-fill"></i>
                         </button>
 
-                        <button class="btn btn-outline-success">
-                            <i class="bi-download"></i>
+                        <button class="btn btn-outline-success" wire:click="downloadFile('{{ $grafic->file }}')"> <i
+                                class="bi-download"></i>
                         </button>
 
                         <button class="btn btn-outline-danger" data-bs-toggle="modal"
