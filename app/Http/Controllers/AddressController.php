@@ -47,8 +47,8 @@ class AddressController extends Controller
     public function edit(Address $address)
     {
         return view('/addresses/edit', [
-      'address' => $address
-    ]);
+            'address' => $address
+        ]);
     }
 
     public function update(Address $address)

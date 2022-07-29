@@ -13,7 +13,7 @@ class GraficsTable extends Component
 
     public int $itemsPerPage = 10;
     public string $search = '';
-    public int $selected_image_id = 0;
+    public int $selectedImageId = 0;
 
     public function updatingSearch()
     {
@@ -32,8 +32,8 @@ class GraficsTable extends Component
         ]);
     }
 
-    public function deleteConfirmation($image_id)
+    public function deleteConfirmation($imageId)
     {
-        $this->selected_image_id = $image_id;
+        $this->selectedImageId = $imageId;
     }
 }
