@@ -53,8 +53,7 @@
                     </h5>
                 </div>
                 <div class="modal-body">
-                    Soll die Grafik mit der ID {{ $selectedImageId }} unwiederruflich gelös
-                    cht werden?
+                    Soll die Grafik mit der ID {{ $selectedImageId }} unwiederruflich gelöscht werden?
                 </div>
 
                 <form method="POST" action="/grafics/{{ $selectedImageId }}">
