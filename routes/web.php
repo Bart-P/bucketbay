@@ -4,6 +4,7 @@ use App\Http\Controllers\GraficController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::get('/cart', [CartController::class, 'index']);
 
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
