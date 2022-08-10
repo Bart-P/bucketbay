@@ -6,78 +6,18 @@
         </x-banner>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-lg-6 order-md-last">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-primary">Produkte im Warenkorb</span>
-                        <span class="badge bg-primary rounded-pill">3</span>
-                    </h4>
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Eimer mit Halterung</h6>
-                                <small class="text-muted">Kurzbeschreibung</small>
-                            </div>
-                            <span class="text-muted"><span>4</span> Stück</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Eimer einzeln</h6>
-                                <small class="text-muted">Kurzbeschreibung</small>
-                            </div>
-                            <span class="text-muted"><span>4</span> Stück</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Halterung einzeln</h6>
-                                <small class="text-muted">Kurzbeschreibung</small>
-                            </div>
-                            <span class="text-muted"><span>4</span> Stück</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Druck</h6>
-                                <small class="text-muted">Kurzbeschreibung</small>
-                            </div>
-                            <span class="text-muted"><span>4</span> Stück</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-6 col-lg-6">
-                    <h4 class="mb-3 text-primary">Lieferadresse</h4>
-                    <table>
-                        <tr>
-                            <td>mephistomedia GmbH</td>
-                        </tr>
-                        <tr>
-                            <td>Herr Daniel du Bois</td>
-                        </tr>
-                        <tr>
-                            <td>in der Mark 107</td>
-                        </tr>
-                        <tr>
-                            <td>44869 Bochum</td>
-                        </tr>
-                        <tr>
-                            <td>Deutschland</td>
-                        </tr>
-                    </table>
-                </div>
+                <x-delivery-address></x-delivery-address>
+                <x-products-in-cart></x-products-in-cart>
             </div>
             <hr class="my-4">
-            <div class="row">
-                <!-- TODO finnish up cart view -->
-                <div class="col-lg-3">
-                    <img src="{{ asset('images/placeholder_150x100.png') }}" alt="" srcset="">
-
-                </div>
-                <div class="col-lg-9">
-
-                </div>
+            <div class="">
+                <h4 class="text-primary mb-4">Druck</h4>
+                <x-print-items></x-print-items>
             </div>
-
             <hr class="my-4">
-
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            <div class="d-flex w-100 justify-content-center">
+                <button class="btn btn-primary btn-lg" type="submit">Bestellung auslösen</button>
+            </div>
         </div>
     </main>
 </x-layout>
