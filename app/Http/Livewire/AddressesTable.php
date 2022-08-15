@@ -36,4 +36,9 @@ class AddressesTable extends Component
     {
         $this->selected_address_id = $address_id;
     }
+
+    public function setDeliveryAddressInCart($address_id)
+    {
+        session(['shopping-cart.delivery-address-id' => $address_id]);
+    }
 }
