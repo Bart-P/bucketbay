@@ -40,8 +40,9 @@ class GraficController extends Controller
 
     public function destroy($selectedImageId)
     {
-        $fileName = Grafic::where('id', $selectedImageId)->value('file');
+        $fileName = Grafic::find($selectedImageId)->value('file');
         if (File::delete('storage/grafics/' . $fileName)) {
+            //TODO remove from cart if deleted image is currently in cart
             Grafic::destroy($selectedImageId);
             return redirect('/grafics')->with('success_msg', 'Die datei wurde gelöscht!');
         };
