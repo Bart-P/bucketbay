@@ -6,7 +6,7 @@
         </x-banner>
         <div class="container">
             <div class="row">
-                <x-delivery-address></x-delivery-address>
+                <x-delivery-address :address="$address"></x-delivery-address>
                 <x-products-in-cart></x-products-in-cart>
             </div>
             <hr class="my-4">
