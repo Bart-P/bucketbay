@@ -24,7 +24,6 @@
             </div>
         </div>
     </div>
-
     <table class="table table-hover table-responsive">
         <thead>
             <tr>
@@ -55,15 +54,18 @@
                     <td>{{ $address->country }}</td>
                     <td style="">
                         <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-outline-success">
+                            <button wire:click="setDeliveryAddressInCart({{ $address->id }})"
+                                class="btn {{ session('shopping-cart.delivery-address-id') == $address->id ? 'btn-success' : 'btn-outline-success' }}"
+                                style="border: none;">
                                 <i class="bi-basket3-fill"></i>
                             </button>
 
-                            <a class="btn btn-outline-primary" href="/addresses/{{ $address->id }}/edit">
+                            <a class="btn btn-outline-primary" style="border: none;"
+                                href="/addresses/{{ $address->id }}/edit">
                                 <i class="bi-pencil"></i>
                             </a>
 
-                            <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                            <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
                                 data-bs-target="#deleteConfirmationModal"
                                 wire:click="deleteConfirmation({{ $address->id }})">
                                 <i class="bi-trash"></i>

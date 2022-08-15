@@ -102,14 +102,14 @@
                         @csrf
                         @method('PUT')
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="bi-save"></i>
+                            <button type="submit" class="btn btn-sm btn-success"><i class="bi-save"></i>
                             </button>
                             <input type=" text" name="name" class="form-control form-control-sm"
                                 value="{{ $grafic->name }}">
                         </div>
                     </form>
                     <span x-show="!open">
-                        <button @click="open = ! open" class="btn btn-outline-secondary btn-sm" style="border: none;">
+                        <button @click="open = ! open" class="btn btn-outline-primary btn-sm" style="border: none;">
                             <i class="bi-pen"></i>
                         </button>
                         {{ $grafic->name }}
@@ -119,15 +119,17 @@
                 <td>{{ $grafic->size_in_mb }}</td>
                 <td class="">
                     <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-outline-success">
+                        <button
+                            class="btn {{ session('shopping-cart.grafics-id') == $grafic->id ? 'btn-success' : 'btn-outline-success' }}"
+                            wire:click="setGraficsIdCart({{ $grafic->id }})" style="border: none;">
                             <i class="bi-basket3-fill"></i>
                         </button>
 
-                        <button class="btn btn-outline-success" wire:click="downloadFile('{{ $grafic->file }}')"> <i
-                                class="bi-download"></i>
+                        <button class="btn btn-outline-success" style="border: none;"
+                            wire:click="downloadFile('{{ $grafic->file }}')"> <i class="bi-download"></i>
                         </button>
 
-                        <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                        <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
                             data-bs-target="#deleteConfirmationModal"
                             wire:click="deleteConfirmation({{ $grafic->id }})">
                             <i class="bi-trash"></i>
