@@ -42,4 +42,11 @@ class GraficsTable extends Component
     {
         return Storage::download('public/grafics/' . $fileName);
     }
+
+    public function setGraficsIdCart(int $graficsId)
+    {
+        // update the updated at field
+        // Grafic::find($graficsId)->touch();
+        session(['shopping-cart.grafics-id' => $graficsId]);
+    }
 }
