@@ -68,6 +68,9 @@ class AddressController extends Controller
         $address->updateTimestamps();
 
         if ($address->update($address_fields)) {
+            if ($address->id == session('shopping-cart.delivery-address-id')) {
+                session('shopping-cart.delivery-address-id', $address->id);
+            }
             return redirect('/addresses')->with('success_msg', 'Adresse erfolgreich bearbeitet!');
         };
 
@@ -76,7 +79,11 @@ class AddressController extends Controller
 
     public function destroy($address_id)
     {
-        Address::destroy($address_id);
-        return redirect('/addresses')->with('success_msg', 'Adresse wurde gelöscht!');
+        if (Address::destroy($address_id)) {
+            if (session('shopping-cart.delivery-address-id') == $address_id) {
+                session('shopping-cart.delivery-address-id', null);
+            }
+            return redirect('/addresses')->with('success_msg', 'Adresse wurde gelöscht!');
+        };
     }
 }
