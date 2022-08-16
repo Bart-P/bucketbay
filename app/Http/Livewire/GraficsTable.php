@@ -45,8 +45,19 @@ class GraficsTable extends Component
 
     public function setGraficsIdCart(int $graficsId)
     {
-        // update the updated at field
-        // Grafic::find($graficsId)->touch();
-        session(['shopping-cart.grafics-id' => $graficsId]);
+        $graficsCartArray = [];
+
+        if (session('shopping-cart.grafics')) {
+            $graficsCartArray = session('shopping-cart.grafics');
+            if (!in_array($graficsId, $graficsCartArray)) {
+                array_push($graficsCartArray, $graficsId);
+            } else {
+                array_splice($graficsCartArray, array_search($graficsId, $graficsCartArray), 1);
+            }
+        } else {
+            $graficsCartArray = [$graficsId];
+        };
+        /* session(['shopping-cart.grafics' => $graficsCartArray]); */
+        session()->put('shopping-cart.grafics', $graficsCartArray);
     }
 }

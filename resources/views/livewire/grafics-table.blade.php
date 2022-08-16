@@ -89,6 +89,7 @@
             @foreach ($grafics as $grafic)
                 <th scope="row">{{ $grafic->id }}</th>
                 <td>
+                    <!-- TODO this code is used twice, should be put in a separate component? -->
                     @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
                         <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
                             class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;" />
@@ -120,7 +121,7 @@
                 <td class="">
                     <div class="d-flex justify-content-end gap-2">
                         <button
-                            class="btn {{ session('shopping-cart.grafics-id') == $grafic->id ? 'btn-success' : 'btn-outline-success' }}"
+                            class="btn {{ in_array($grafic->id, session('shopping-cart.grafics')) ? 'btn-success' : 'btn-outline-success' }}"
                             wire:click="setGraficsIdCart({{ $grafic->id }})" style="border: none;">
                             <i class="bi-basket3-fill"></i>
                         </button>
