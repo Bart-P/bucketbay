@@ -16,6 +16,7 @@ class GraficsTable extends Component
     public string $search = '';
     public int $selectedImageId = 0;
 
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -47,17 +48,16 @@ class GraficsTable extends Component
     {
         $graficsCartArray = [];
 
-        if (session('shopping-cart.grafics')) {
-            $graficsCartArray = session('shopping-cart.grafics');
+        if (session('shopping-cart.grafics-id')) {
+            $graficsCartArray = session('shopping-cart.grafics-id');
             if (!in_array($graficsId, $graficsCartArray)) {
-                array_push($graficsCartArray, $graficsId);
+                array_unshift($graficsCartArray, $graficsId);
             } else {
                 array_splice($graficsCartArray, array_search($graficsId, $graficsCartArray), 1);
             }
         } else {
             $graficsCartArray = [$graficsId];
         };
-        /* session(['shopping-cart.grafics' => $graficsCartArray]); */
-        session()->put('shopping-cart.grafics', $graficsCartArray);
+        session()->put('shopping-cart.grafics-id', $graficsCartArray);
     }
 }
