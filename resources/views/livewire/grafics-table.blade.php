@@ -89,13 +89,15 @@
             @foreach ($grafics as $grafic)
                 <th scope="row">{{ $grafic->id }}</th>
                 <td>
-                    <!-- TODO this code is used twice, should be put in a separate component? -->
-                    @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
-                        <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
-                            class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;" />
-                    @else
-                        <img src="{{ asset('images/' . $grafic->file) }}" alt="logo" class="rounded-2" />
-                    @endif
+                    <a href="{{ asset('storage/grafics/' . $grafic->file) }}" target="_blank">
+                        <!-- TODO this code is used twice, should be put in a separate component? -->
+                        @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
+                            <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
+                                class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;" />
+                        @else
+                            <img src="{{ asset('images/' . $grafic->file) }}" alt="logo" class="rounded-2" />
+                        @endif
+                    </a>
                 </td>
                 <td x-data="{ open: false }">
                     <form x-show="open" @click.outside="open = false" method="POST"
@@ -121,12 +123,12 @@
                 <td class="">
                     <div class="d-flex justify-content-end gap-2">
                         <button
-                            class="btn {{ in_array($grafic->id, session('shopping-cart.grafics')) ? 'btn-success' : 'btn-outline-success' }}"
+                            class="btn {{ session('shopping-cart.grafics-id') && in_array($grafic->id, session('shopping-cart.grafics-id')) ? 'btn-success' : 'btn-outline-success' }}"
                             wire:click="setGraficsIdCart({{ $grafic->id }})" style="border: none;">
                             <i class="bi-basket3-fill"></i>
                         </button>
 
-                        <button class="btn btn-outline-success" style="border: none;"
+                        <button class="btn btn-outline-primary" style="border: none;"
                             wire:click="downloadFile('{{ $grafic->file }}')"> <i class="bi-download"></i>
                         </button>
 
