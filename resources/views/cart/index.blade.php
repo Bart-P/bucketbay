@@ -12,7 +12,7 @@
             <hr class="my-4">
             <div class="">
                 <h4 class="text-primary mb-4">Druck</h4>
-                <x-print-items :grafics="$grafics"></x-print-items>
+                @livewire('grafics-in-cart')
             </div>
             <hr class="my-4">
             <div class="d-flex w-100 justify-content-center">
