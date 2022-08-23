@@ -3,6 +3,7 @@
 use App\Http\Controllers\GraficController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -25,7 +26,7 @@ Route::get('/cart', [CartController::class, 'index']);
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [ItemController::class, 'index']);
+    Route::get('/', [ProductController::class, 'index']);
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::resources([
