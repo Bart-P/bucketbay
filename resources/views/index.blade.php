@@ -18,7 +18,6 @@
                             <img src="{{ asset('/images/items/' . $item['image']) }}" class="card-img-top p-4"
                                 alt="Bild vom Eimer">
                         </div>
-
                         <div class="card-title text-center pt-4 fw-bold text-uppercase">
                             {{ $item['name'] }}
                         </div>
@@ -28,7 +27,7 @@
                                 {{ $item['description'] }}
                             </p>
 
-                            <button type="button" class="btn btn-outline-success float-end">
+                            <button wire:click="addProductToCart({{$item->id}})" type="button" class="btn btn-outline-success float-end">
                                 <i class="bi-basket3-fill"></i>
                             </button>
                         </div>
