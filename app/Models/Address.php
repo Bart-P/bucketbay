@@ -33,13 +33,13 @@ class Address extends Model
             ? $query
             : $query
                 ->where(function ($q) {
-                    $q->where('name1', 'like', '%' . static::$searchTerm . '%')
+                 $q->where('name1', 'like', '%' . static::$searchTerm . '%')
                     ->orwhere('name2', 'like', '%' . static::$searchTerm . '%')
                     ->orwhere('name3', 'like', '%' . static::$searchTerm . '%');
                 });
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
