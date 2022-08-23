@@ -3,6 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Grafic;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class GraficsInCart extends Component
@@ -11,21 +14,22 @@ class GraficsInCart extends Component
 
     private $printFilesInCart = [];
 
-    public function removeGraficFromCart()
+    public function removeGraficFromCart($graficId)
     {
-        // TODO pass value to emit and catch it here to delete printfile to remove from session
-        dd($this->printFilesInCart);
-        /* $selectedGraficInCart = array_search($graficId, $graficsCartArray); */
-        /**/
-        /* if ($selectedGraficInCart) { */
-        /*     array_splice($graficsCartArray, $selectedGraficInCart, 1); */
-        /* } */
-    }
-    public function render()
-    {
-        foreach ($this->getGraficIdsInCartArray() as $id) {
-            array_push($this->printFilesInCart, Grafic::find($id));
+        if($graficId) {
+            $currentGraficsCart = session('shopping-cart.grafic-ids');
+            $indexToDelete = array_search($graficId, $currentGraficsCart);
+            if($indexToDelete !== false) {
+                array_splice($currentGraficsCart, $indexToDelete, 1);
+                session()->put('shopping-cart.grafic-ids', $currentGraficsCart);
+            }
         }
+    }
+
+    public function render(): Factory|View|Application
+    {
+        if($this->getGraficIdsInCartArray())
+            $this->printFilesInCart = Grafic::find($this->getGraficIdsInCartArray());
 
         return view('livewire.grafics-in-cart', [
             'grafics' => $this->printFilesInCart
@@ -34,6 +38,6 @@ class GraficsInCart extends Component
 
     public function getGraficIdsInCartArray(): array | null
     {
-        return session('shopping-cart.grafics-id');
+        return session('shopping-cart.grafic-ids');
     }
 }

@@ -1,4 +1,4 @@
-<x-table-wrapper>
+<x-table-wrapper xmlns:wire="http://www.w3.org/1999/xhtml">
     <x-table-controlls-wrapper>
         <button type="button" class="btn btn-outline-primary m-4" data-bs-toggle="modal"
             data-bs-target="#uploadGraficsModal">
@@ -21,7 +21,7 @@
                     @csrf
                     <div class="modal-body d-flex flex-column gap-3">
                         <div class="input-group">
-                            <label for="fileName" class="input-group-text">Name</label>
+                            <label for="name" class="input-group-text">Name</label>
                             <input type="text" class="form-control" name="name" required>
                         </div>
 
@@ -123,7 +123,7 @@
                 <td class="">
                     <div class="d-flex justify-content-end gap-2">
                         <button
-                            class="btn {{ session('shopping-cart.grafics-id') && in_array($grafic->id, session('shopping-cart.grafics-id')) ? 'btn-success' : 'btn-outline-success' }}"
+                            class="btn {{ session('shopping-cart.grafic-ids') && in_array($grafic->id, session('shopping-cart.grafic-ids')) ? 'btn-success' : 'btn-outline-success' }}"
                             wire:click="setGraficsIdCart({{ $grafic->id }})" style="border: none;">
                             <i class="bi-basket3-fill"></i>
                         </button>

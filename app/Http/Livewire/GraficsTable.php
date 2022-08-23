@@ -48,8 +48,8 @@ class GraficsTable extends Component
     {
         $graficsCartArray = [];
 
-        if (session('shopping-cart.grafics-id')) {
-            $graficsCartArray = session('shopping-cart.grafics-id');
+        if (session('shopping-cart.grafic-ids')) {
+            $graficsCartArray = session('shopping-cart.grafic-ids');
             if (!in_array($graficsId, $graficsCartArray)) {
                 array_unshift($graficsCartArray, $graficsId);
             } else {
@@ -58,6 +58,6 @@ class GraficsTable extends Component
         } else {
             $graficsCartArray = [$graficsId];
         };
-        session()->put('shopping-cart.grafics-id', $graficsCartArray);
+        session()->put('shopping-cart.grafic-ids', $graficsCartArray);
     }
 }
