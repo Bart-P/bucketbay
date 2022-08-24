@@ -3,31 +3,37 @@
 namespace App\Http\Livewire;
 
 use App\Models\Item;
+use App\Services\CartService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class ProductsList extends Component
 {
-    public function render()
+    protected CartService $cartService;
+
+    public function boot(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    public function render(): Factory|View|Application
     {
         return view('livewire.products-list', ['items' => Item::all()]);
     }
 
-    public function addProductToCart($id) {
-        if(session('shopping-cart.products')) {
-            $currentCartProductIds = collect(session('shopping-cart.products'));
-            if($this->productIdIsInCart($id)) {
-                $currentCartProductIds[$id] += 1;
-            } else {
-                $currentCartProductIds->put($id, 1);
-            }
-            session()->put('shopping-cart.products', $currentCartProductIds);
-        } else {
-            session()->put('shopping-cart.products', collect([$id => 1]));
-        }
-
+    public function addOneProductToCart($id): void
+    {
+        $this->cartService->addOneProduct($id);
     }
 
-    public function productIdIsInCart($id): bool {
-        return collect(session('shopping-cart.products'))->has($id);
+    public function removeOneProductFromCart($id): void
+    {
+        $this->cartService->removeOneProduct($id);
+    }
+
+    public function getQuantityOfProductInCart($id): int {
+        return $this->cartService->getQuantity($id);
     }
 }
