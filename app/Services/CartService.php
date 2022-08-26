@@ -9,7 +9,7 @@ class CartService
     private const CART_ADDRESS = self::CART . '.delivery-address-id';
     private const CART_GRAFICS = self::CART . '.grafic-ids';
 
-    public function addOneProduct($id): void
+    public function addOneProduct(int $id): void
     {
         if (session(self::CART_PRODUCTS)) {
             $currentCartProductIds = collect(session(self::CART_PRODUCTS));
@@ -24,7 +24,7 @@ class CartService
         }
     }
 
-    public function productIdIsSet($id): bool
+    public function productIdIsSet(int $id): bool
     {
         return collect(session(self::CART_PRODUCTS))->has($id);
     }
@@ -34,13 +34,13 @@ class CartService
         $currendCartProductIds = collect(session(self::CART_PRODUCTS));
         if ($this->productIdIsSet($id)) {
             $currendCartProductIds[$id] -= 1;
-            if ($currendCartProductIds[$id] === 0) $currendCartProductIds->pull($id);
+            if ($currendCartProductIds[$id] <= 0) $currendCartProductIds->pull($id);
 
             session()->put(self::CART_PRODUCTS, $currendCartProductIds);
         }
     }
 
-    public function getQuantity($id): int
+    public function getQuantity(int $id): int
     {
         if ($this->productIdIsSet($id)) return collect(session(self::CART_PRODUCTS))[$id];
 
@@ -57,8 +57,35 @@ class CartService
         return session(self::CART_ADDRESS) != null;
     }
 
-    public function addAddressId($id): void
+    public function addAddressId(int $id): void
     {
         session()->put(self::CART_ADDRESS, $id);
+    }
+
+    /**
+     * Add or remove the grafics ID in the Cart:
+     *  - if the ID is present it will remove it
+     *  - if the ID is not present it will add it
+     *
+     * @param int $id
+     * @return void
+     */
+    public function addOrRemoveGraficsId(int $id): void
+    {
+        if ($graficsCartArray = session(self::CART_GRAFICS)) {
+            if (!in_array($id, $graficsCartArray)) {
+                array_unshift($graficsCartArray, $id);
+            } else {
+                array_splice($graficsCartArray, array_search($id, $graficsCartArray), 1);
+            }
+        } else {
+            $graficsCartArray = [$id];
+        };
+        session()->put(self::CART_GRAFICS, $graficsCartArray);
+    }
+
+    public function getAllGrafics(): array|null
+    {
+        return session(self::CART_GRAFICS);
     }
 }

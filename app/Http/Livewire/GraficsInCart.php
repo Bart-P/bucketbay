@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Grafic;
+use App\Services\CartService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,32 +13,25 @@ class GraficsInCart extends Component
 {
     protected $listeners = ['removeGraficFromCart'];
 
-    private $printFilesInCart = [];
+    private CartService $cartService;
+
+    public function boot(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
 
     public function removeGraficFromCart($graficId)
     {
-        if($graficId) {
-            $currentGraficsCart = session('shopping-cart.grafic-ids');
-            $indexToDelete = array_search($graficId, $currentGraficsCart);
-            if($indexToDelete !== false) {
-                array_splice($currentGraficsCart, $indexToDelete, 1);
-                session()->put('shopping-cart.grafic-ids', $currentGraficsCart);
-            }
-        }
+        $this->cartService->addOrRemoveGraficsId($graficId);
     }
 
     public function render(): Factory|View|Application
     {
-        if($this->getGraficIdsInCartArray())
-            $this->printFilesInCart = Grafic::find($this->getGraficIdsInCartArray());
+        $graficsInCart = [];
+        if ($this->cartService->getAllGrafics()) {
+            $graficsInCart = Grafic::find($this->cartService->getAllGrafics());
+        }
 
-        return view('livewire.grafics-in-cart', [
-            'grafics' => $this->printFilesInCart
-        ]);
-    }
-
-    public function getGraficIdsInCartArray(): array | null
-    {
-        return session('shopping-cart.grafic-ids');
+        return view('livewire.grafics-in-cart', ['grafics' => $graficsInCart]);
     }
 }

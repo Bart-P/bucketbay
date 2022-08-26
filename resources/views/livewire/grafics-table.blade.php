@@ -1,14 +1,14 @@
 <x-table-wrapper xmlns:wire="http://www.w3.org/1999/xhtml">
     <x-table-controlls-wrapper>
         <button type="button" class="btn btn-outline-primary m-4" data-bs-toggle="modal"
-            data-bs-target="#uploadGraficsModal">
+                data-bs-target="#uploadGraficsModal">
             Grafik Hochladen
         </button>
     </x-table-controlls-wrapper>
 
     <!-- Upload Grafics Modal -->
     <div class="modal fade" id="uploadGraficsModal" tabindex="-1" aria-labelledby="uploadGraficsModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -44,7 +44,7 @@
 
     <!-- Delete Confirmation Grafics Modal -->
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
-        aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+         aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -75,72 +75,72 @@
     </div>
     <table class="table table-hover">
         <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Logo</th>
-                <th scope="col">Name</th>
-                <th scope="col">Typ</th>
-                <th scope="col">MB</th>
-                <th scope="col"></th>
-            </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Logo</th>
+            <th scope="col">Name</th>
+            <th scope="col">Typ</th>
+            <th scope="col">MB</th>
+            <th scope="col"></th>
+        </tr>
         </thead>
 
         <tbody>
-            @foreach ($grafics as $grafic)
-                <th scope="row">{{ $grafic->id }}</th>
-                <td>
-                    <a href="{{ asset('storage/grafics/' . $grafic->file) }}" target="_blank">
-                        <!-- TODO this code is used twice, should be put in a separate component? -->
-                        @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
-                            <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
-                                class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;" />
-                        @else
-                            <img src="{{ asset('images/' . $grafic->file) }}" alt="logo" class="rounded-2" />
-                        @endif
-                    </a>
-                </td>
-                <td x-data="{ open: false }">
-                    <form x-show="open" @click.outside="open = false" method="POST"
-                        action="/grafics/{{ $grafic->id }}">
-                        @csrf
-                        @method('PUT')
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-sm btn-success"><i class="bi-save"></i>
-                            </button>
-                            <input type=" text" name="name" class="form-control form-control-sm"
-                                value="{{ $grafic->name }}">
-                        </div>
-                    </form>
-                    <span x-show="!open">
+        @foreach ($grafics as $grafic)
+            <th scope="row">{{ $grafic->id }}</th>
+            <td>
+                <a href="{{ asset('storage/grafics/' . $grafic->file) }}" target="_blank">
+                    <!-- TODO this code is used twice, should be put in a separate component? -->
+                    @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
+                        <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
+                             class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;"/>
+                    @else
+                        <img src="{{ asset('images/' . $grafic->file) }}" alt="logo" class="rounded-2"/>
+                    @endif
+                </a>
+            </td>
+            <td x-data="{ open: false }">
+                <form x-show="open" @click.outside="open = false" method="POST"
+                      action="/grafics/{{ $grafic->id }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-sm btn-success"><i class="bi-save"></i>
+                        </button>
+                        <input type=" text" name="name" class="form-control form-control-sm"
+                               value="{{ $grafic->name }}">
+                    </div>
+                </form>
+                <span x-show="!open">
                         <button @click="open = ! open" class="btn btn-outline-primary btn-sm" style="border: none;">
                             <i class="bi-pen"></i>
                         </button>
                         {{ $grafic->name }}
                     </span>
-                </td>
-                <td>{{ $grafic->type }}</td>
-                <td>{{ $grafic->size_in_mb }}</td>
-                <td class="">
-                    <div class="d-flex justify-content-end gap-2">
-                        <button
+            </td>
+            <td>{{ $grafic->type }}</td>
+            <td>{{ $grafic->size_in_mb }}</td>
+            <td class="">
+                <div class="d-flex justify-content-end gap-2">
+                    <button
                             class="btn {{ session('shopping-cart.grafic-ids') && in_array($grafic->id, session('shopping-cart.grafic-ids')) ? 'btn-success' : 'btn-outline-success' }}"
-                            wire:click="setGraficsIdCart({{ $grafic->id }})" style="border: none;">
-                            <i class="bi-basket3-fill"></i>
-                        </button>
+                            wire:click="toggleGraficsIdInCart({{ $grafic->id }})" style="border: none;">
+                        <i class="bi-basket3-fill"></i>
+                    </button>
 
-                        <button class="btn btn-outline-primary" style="border: none;"
-                            wire:click="downloadFile('{{ $grafic->file }}')"> <i class="bi-download"></i>
-                        </button>
+                    <button class="btn btn-outline-primary" style="border: none;"
+                            wire:click="downloadFile('{{ $grafic->file }}')"><i class="bi-download"></i>
+                    </button>
 
-                        <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
+                    <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
                             data-bs-target="#deleteConfirmationModal"
                             wire:click="deleteConfirmation({{ $grafic->id }})">
-                            <i class="bi-trash"></i>
-                        </button>
-                    </div>
-                </td>
-                </tr>
-            @endforeach
+                        <i class="bi-trash"></i>
+                    </button>
+                </div>
+            </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
     <div class="d-flex justify-content-between align-items-center mx-4">

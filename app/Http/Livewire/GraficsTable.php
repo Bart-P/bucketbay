@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Grafic;
+use App\Services\CartService;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,12 +11,17 @@ use Livewire\WithPagination;
 class GraficsTable extends Component
 {
     use WithPagination;
-    protected string $paginationTheme = 'bootstrap';
 
     public int $itemsPerPage = 10;
     public string $search = '';
     public int $selectedImageId = 0;
+    protected string $paginationTheme = 'bootstrap';
+    private CartService $cartService;
 
+    public function boot(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
 
     public function updatingSearch()
     {
@@ -29,9 +35,7 @@ class GraficsTable extends Component
 
     public function render()
     {
-        return view('livewire.grafics-table', [
-            'grafics' => Grafic::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage)
-        ]);
+        return view('livewire.grafics-table', ['grafics' => Grafic::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage)]);
     }
 
     public function deleteConfirmation($imageId)
@@ -44,20 +48,8 @@ class GraficsTable extends Component
         return Storage::download('public/grafics/' . $fileName);
     }
 
-    public function setGraficsIdCart(int $graficsId)
+    public function toggleGraficsIdInCart(int $graficsId)
     {
-        $graficsCartArray = [];
-
-        if (session('shopping-cart.grafic-ids')) {
-            $graficsCartArray = session('shopping-cart.grafic-ids');
-            if (!in_array($graficsId, $graficsCartArray)) {
-                array_unshift($graficsCartArray, $graficsId);
-            } else {
-                array_splice($graficsCartArray, array_search($graficsId, $graficsCartArray), 1);
-            }
-        } else {
-            $graficsCartArray = [$graficsId];
-        };
-        session()->put('shopping-cart.grafic-ids', $graficsCartArray);
+        $this->cartService->addOrRemoveGraficsId($graficsId);
     }
 }
