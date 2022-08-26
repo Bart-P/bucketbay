@@ -9,6 +9,8 @@ class CartService
     private const CART_ADDRESS = self::CART . '.delivery-address-id';
     private const CART_GRAFICS = self::CART . '.grafic-ids';
 
+    ///// PRODUCT
+
     public function addOneProduct(int $id): void
     {
         if (session(self::CART_PRODUCTS)) {
@@ -18,6 +20,7 @@ class CartService
             } else {
                 $currentCartProductIds->put($id, 1);
             }
+
             session()->put(self::CART_PRODUCTS, $currentCartProductIds);
         } else {
             session()->put(self::CART_PRODUCTS, collect([$id => 1]));
@@ -47,6 +50,8 @@ class CartService
         return 0;
     }
 
+    ///// ADDRESS
+
     public function getAddressId(): int|null
     {
         return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
@@ -61,6 +66,8 @@ class CartService
     {
         session()->put(self::CART_ADDRESS, $id);
     }
+
+    ///// GRAFIC
 
     /**
      * Add or remove the grafics ID in the Cart:
@@ -80,7 +87,8 @@ class CartService
             }
         } else {
             $graficsCartArray = [$id];
-        };
+        }
+
         session()->put(self::CART_GRAFICS, $graficsCartArray);
     }
 
