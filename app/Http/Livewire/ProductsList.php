@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Item;
+use App\Models\Product;
 use App\Services\CartService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -20,7 +20,7 @@ class ProductsList extends Component
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.products-list', ['items' => Item::all()]);
+        return view('livewire.products-list', ['items' => Product::all()]);
     }
 
     public function addOneProductToCart($id): void
@@ -33,7 +33,8 @@ class ProductsList extends Component
         $this->cartService->removeOneProduct($id);
     }
 
-    public function getQuantityOfProductInCart($id): int {
+    public function getQuantityOfProductInCart($id): int
+    {
         return $this->cartService->getQuantity($id);
     }
 }
