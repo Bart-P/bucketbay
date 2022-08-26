@@ -15,14 +15,12 @@ class GraficFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        return [
-            'user_id' => User::all()->random()->id,
-            'name' => $this->faker->unique()->company,
-            'file' => 'placeholder_150x100.png',
-            'type' => 'png',
-            'size_in_mb' => $this->faker->randomFloat(2, 0.1, 5),
-        ];
+        return ['user_id'    => User::all()->random()->id,
+                'name'       => $this->faker->unique()->company,
+                'file'       => 'placeholder_150x100.png',
+                'type'       => 'png',
+                'size_in_mb' => $this->faker->randomFloat(2, 0.1, 5),];
     }
 }

@@ -25,44 +25,34 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::create([
-            'name' => 'Bartek',
-            'email' => 'bar-p@wp.pl',
-            'password' => bcrypt('asdf'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-        ]);
+        User::create(['name'              => 'Bartek',
+                      'email'             => 'bar-p@wp.pl',
+                      'password'          => bcrypt('asdf'),
+                      'email_verified_at' => now(),
+                      'remember_token'    => Str::random(10),]);
 
-        User::create([
-            'name' => 'Daniel',
-            'email' => 'da@ni.el',
-            'password' => bcrypt('asdf'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-        ]);
+        User::create(['name'              => 'Daniel',
+                      'email'             => 'da@ni.el',
+                      'password'          => bcrypt('asdf'),
+                      'email_verified_at' => now(),
+                      'remember_token'    => Str::random(10),]);
 
         Grafic::factory(10)->create();
         Address::factory(100)->create();
 
-        Item::create([
-            'name' => 'Ice Bucket mit Halterung',
-            'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-            'image' => 'Ice-Bucket-mit-logo-und-halterung.jpg',
-            'external_id' => ''
-        ]);
+        Item::create(['name'        => 'Ice Bucket mit Halterung',
+                      'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
+                      'image'       => 'Ice-Bucket-mit-logo-und-halterung.jpg',
+                      'external_id' => '']);
 
-        Item::create([
-            'name' => 'Ice Bucket Einzeln',
-            'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-            'image' => 'Ice-Bucket-mit-logo.jpg',
-            'external_id' => ''
-        ]);
+        Item::create(['name'        => 'Ice Bucket Einzeln',
+                      'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
+                      'image'       => 'Ice-Bucket-mit-logo.jpg',
+                      'external_id' => '']);
 
-        Item::create([
-            'name' => 'Halterung Einzeln',
-            'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-            'image' => 'Halterung.jpg',
-            'external_id' => ''
-        ]);
+        Item::create(['name'        => 'Halterung Einzeln',
+                      'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
+                      'image'       => 'Halterung.jpg',
+                      'external_id' => '']);
     }
 }

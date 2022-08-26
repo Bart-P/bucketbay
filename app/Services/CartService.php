@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
+
 class CartService
 {
     private const CART = 'shopping-cart';
@@ -50,9 +52,14 @@ class CartService
         return 0;
     }
 
+    public function getProducts(): ?Collection
+    {
+        return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : null;
+    }
+
     ///// ADDRESS
 
-    public function getAddressId(): int|null
+    public function getAddressId(): ?int
     {
         return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
     }
@@ -92,7 +99,7 @@ class CartService
         session()->put(self::CART_GRAFICS, $graficsCartArray);
     }
 
-    public function getAllGrafics(): array|null
+    public function getAllGrafics(): ?array
     {
         return session(self::CART_GRAFICS);
     }
