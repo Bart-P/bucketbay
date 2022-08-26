@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row">
                 <x-delivery-address :address="$address"></x-delivery-address>
-                <x-products-in-cart></x-products-in-cart>
+                @livewire('products-in-cart')
             </div>
             <hr class="my-4">
             <div class="">
