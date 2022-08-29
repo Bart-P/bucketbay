@@ -45,24 +45,26 @@ class CartService
         }
     }
 
+    public function removeProduct($id): void
+    {
+        $productsInCart = collect(session(self::CART_PRODUCTS));
+        session()->put(self::CART_PRODUCTS, $productsInCart->forget($id));
+
+    }
+
     public function getQuantity(int $id): int
     {
-        if ($this->productIdIsSet($id)) return collect(session(self::CART_PRODUCTS))[$id];
+        if ($this->productIdIsSet($id)) return (int) collect(session(self::CART_PRODUCTS))[$id];
 
         return 0;
     }
-
-    public function getProducts(): ?Collection
-    {
-        return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : null;
-    }
-
-    ///// ADDRESS
 
     public function getAddressId(): ?int
     {
         return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
     }
+
+    ///// ADDRESS
 
     public function addressIsSet(): bool
     {
@@ -73,8 +75,6 @@ class CartService
     {
         session()->put(self::CART_ADDRESS, $id);
     }
-
-    ///// GRAFIC
 
     /**
      * Add or remove the grafics ID in the Cart:
@@ -99,8 +99,21 @@ class CartService
         session()->put(self::CART_GRAFICS, $graficsCartArray);
     }
 
+    ///// GRAFIC
+
     public function getAllGrafics(): ?array
     {
         return session(self::CART_GRAFICS);
+    }
+
+    public function updateQuantity($id, $quantity): void
+    {
+        $productsInCart = $this->getProducts();
+        $productsInCart[$id] = $quantity;
+    }
+
+    public function getProducts(): Collection
+    {
+        return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : collect([]);
     }
 }
