@@ -23,7 +23,6 @@
                             Stück
                         </span>
                     </span>
-
                     <span class="d-flex">
 
                         <button x-bind:hidden="!edit" x-on:click="edit = false"
