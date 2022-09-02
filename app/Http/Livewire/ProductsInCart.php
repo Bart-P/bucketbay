@@ -15,14 +15,16 @@ class ProductsInCart extends Component
     protected $listeners = ['updateProductQuantityInCart', 'updateNewQuantity'];
     private CartService $cartService;
 
-    public function boot(CartService $cartService)
+    public function boot(CartService $cartService): void
     {
         $this->cartService = $cartService;
+        $this->newProductQuantities = $this->cartService->getProducts()->toArray();
     }
 
     public function render(): Factory|View|Application
     {
         $productsInCart = $this->cartService->getProducts();
+
         return view('livewire.products-in-cart', ['products'       => Product::find($productsInCart->keys()),
                                                   'productsInCart' => $productsInCart]);
     }
@@ -32,7 +34,7 @@ class ProductsInCart extends Component
         $this->cartService->removeProduct($id);
     }
 
-    public function updateNewQuantity($id)
+    public function updateNewQuantity($id): void
     {
         $this->newProductQuantities[$id] = $this->cartService->getQuantity($id);
     }
@@ -41,6 +43,6 @@ class ProductsInCart extends Component
     {
         $quantity = (int) $this->newProductQuantities[$id];
         $this->cartService->updateQuantity($id, $quantity);
-        $this->newProductQuantities = [];
+        //$this->newProductQuantities = [];
     }
 }
