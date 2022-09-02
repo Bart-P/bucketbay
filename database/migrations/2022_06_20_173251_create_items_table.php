@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->longText('description');
             $table->string('image');
+            $table->boolean('printable');
             $table->string('external_id');
             $table->timestamps();
         });

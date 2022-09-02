@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Address;
 use App\Models\Grafic;
 use App\Models\Item;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -40,19 +41,22 @@ class DatabaseSeeder extends Seeder
         Grafic::factory(10)->create();
         Address::factory(100)->create();
 
-        Item::create(['name'        => 'Ice Bucket mit Halterung',
-                      'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-                      'image'       => 'Ice-Bucket-mit-logo-und-halterung.jpg',
-                      'external_id' => '']);
+        Product::create(['name'        => 'Ice Bucket mit Halterung',
+                         'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
+                         'image'       => 'Ice-Bucket-mit-logo-und-halterung.jpg',
+                         'printable'   => true,
+                         'external_id' => '']);
 
-        Item::create(['name'        => 'Ice Bucket Einzeln',
-                      'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-                      'image'       => 'Ice-Bucket-mit-logo.jpg',
-                      'external_id' => '']);
+        Product::create(['name'        => 'Ice Bucket Einzeln',
+                         'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
+                         'image'       => 'Ice-Bucket-mit-logo.jpg',
+                         'printable'   => true,
+                         'external_id' => '']);
 
-        Item::create(['name'        => 'Halterung Einzeln',
-                      'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
-                      'image'       => 'Halterung.jpg',
-                      'external_id' => '']);
+        Product::create(['name'        => 'Halterung Einzeln',
+                         'description' => 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.',
+                         'image'       => 'Halterung.jpg',
+                         'printable'   => false,
+                         'external_id' => '']);
     }
 }
