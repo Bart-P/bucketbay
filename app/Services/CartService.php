@@ -45,13 +45,6 @@ class CartService
         }
     }
 
-    public function removeProduct($id): void
-    {
-        $productsInCart = collect(session(self::CART_PRODUCTS));
-        session()->put(self::CART_PRODUCTS, $productsInCart->forget($id));
-
-    }
-
     public function getQuantity(int $id): int
     {
         if ($this->productIdIsSet($id)) return (int) collect(session(self::CART_PRODUCTS))[$id];
@@ -59,22 +52,46 @@ class CartService
         return 0;
     }
 
+    public function updateQuantity($id, $quantity): void
+    {
+        if (gettype($quantity) === "integer" && $quantity > 0) {
+            $productsInCart = $this->getProducts();
+            $productsInCart[$id] = $quantity;
+        } else {
+            $this->removeProduct($id);
+        }
+    }
+
+    public function getProducts(): Collection
+    {
+        return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : collect([]);
+    }
+
+    public function removeProduct($id): void
+    {
+        $productsInCart = collect(session(self::CART_PRODUCTS));
+        session()->put(self::CART_PRODUCTS, $productsInCart->forget($id));
+
+    }
+
+    ///// ADDRESS
+
+    public function addAddressId(int $id): void
+    {
+        session()->put(self::CART_ADDRESS, $id);
+    }
+
     public function getAddressId(): ?int
     {
         return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
     }
-
-    ///// ADDRESS
 
     public function addressIsSet(): bool
     {
         return session(self::CART_ADDRESS) != null;
     }
 
-    public function addAddressId(int $id): void
-    {
-        session()->put(self::CART_ADDRESS, $id);
-    }
+    ///// GRAFIC
 
     /**
      * Add or remove the grafics ID in the Cart:
@@ -99,21 +116,8 @@ class CartService
         session()->put(self::CART_GRAFICS, $graficsCartArray);
     }
 
-    ///// GRAFIC
-
     public function getAllGrafics(): ?array
     {
         return session(self::CART_GRAFICS);
-    }
-
-    public function updateQuantity($id, $quantity): void
-    {
-        $productsInCart = $this->getProducts();
-        $productsInCart[$id] = $quantity;
-    }
-
-    public function getProducts(): Collection
-    {
-        return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : collect([]);
     }
 }
