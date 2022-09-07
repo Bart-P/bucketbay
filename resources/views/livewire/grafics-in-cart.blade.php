@@ -5,28 +5,28 @@
                 @foreach ($grafics as $grafic)
                     <tr x-data="{ open: false }" class="table">
                         <td>
-                            <!-- TODO this code is used twice, should be put in a separate component? -->
                             @if ($grafic->file != 'placeholder_150x100.png' && !empty($grafic->file))
                                 <img src="{{ asset('storage/grafics/' . $grafic->file) }}" alt="logo"
-                                    class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;" />
+                                     class="img-fluid rounded" style="height: 100px; width: 150px; object-fit: cover;"/>
                             @else
-                                <img src="{{ asset('images/' . $grafic->file) }}" alt="logo" class="img-fluid rounded rounded-2"
-                                    style="height: 100px; width: 150px; object-fit: cover;" />
+                                <img src="{{ asset('images/' . $grafic->file) }}" alt="logo"
+                                     class="img-fluid rounded rounded-2"
+                                     style="height: 100px; width: 150px; object-fit: cover;"/>
                             @endif
                         </td>
                         <td>
                             <table class="table table-borderless">
                                 <tbody class="border-0">
                                 <tr>
-                                    <th class="col-3">Name: </th>
+                                    <th class="col-3">Name:</th>
                                     <td class="col-9">{{ $grafic->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="col-3">Typ: </th>
+                                    <th class="col-3">Typ:</th>
                                     <td class="col-9">{{ $grafic->type }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="col-3">Größe: </th>
+                                    <th class="col-3">Größe:</th>
                                     <td class="col-9">{{ $grafic->size_in_mb }} MB</td>
                                 </tr>
 
@@ -56,7 +56,8 @@
                         </td>
 
                         <td class="align-middle text-end">
-                            <button wire:click="$emit('removeGraficFromCart', {{ $grafic->id }})" class="btn btn-outline-danger border-0">
+                            <button wire:click="$emit('removeGraficFromCart', {{ $grafic->id }})"
+                                    class="btn btn-outline-danger border-0">
                                 <i class="bi-trash"></i>
                             </button>
                         </td>
