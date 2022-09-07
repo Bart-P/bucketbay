@@ -12,7 +12,6 @@ use Livewire\Component;
 class ProductsInCart extends Component
 {
     public array $newProductQuantities = [];
-    protected $listeners = ['updateProductQuantityInCart', 'updateNewQuantity'];
     private CartService $cartService;
 
     public function boot(CartService $cartService): void
@@ -24,25 +23,11 @@ class ProductsInCart extends Component
     public function render(): Factory|View|Application
     {
         $productsInCart = $this->cartService->getProducts();
-
-        return view('livewire.products-in-cart', ['products'       => Product::find($productsInCart->keys()),
-                                                  'productsInCart' => $productsInCart]);
+        return view('livewire.products-in-cart', ['products' => Product::find($productsInCart->keys())]);
     }
 
     public function deleteProductFromCart($id): void
     {
         $this->cartService->removeProduct($id);
-    }
-
-    public function updateNewQuantity($id): void
-    {
-        $this->newProductQuantities[$id] = $this->cartService->getQuantity($id);
-    }
-
-    public function updateProductQuantityInCart($id): void
-    {
-        $quantity = (int) $this->newProductQuantities[$id];
-        $this->cartService->updateQuantity($id, $quantity);
-        //$this->newProductQuantities = [];
     }
 }
