@@ -71,7 +71,6 @@ class CartService
     {
         $productsInCart = collect(session(self::CART_PRODUCTS));
         session()->put(self::CART_PRODUCTS, $productsInCart->forget($id));
-
     }
 
     ///// ADDRESS
