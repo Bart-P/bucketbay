@@ -7,7 +7,7 @@
                     {{ $product->name }}
                 </div>
                 @if($product->printable)
-                    <button wire:click="$emit(addOrderObject, $product->id)"
+                    <button wire:click="addProductToOrderObjects({{ $product->id }})"
                             class="btn btn-outline-success border-0 ms-auto">
                         <i class="bi-plus-circle"></i></button>
                 @else
