@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\OrderObject;
 use Illuminate\Support\Collection;
 
 class CartService
@@ -10,6 +11,7 @@ class CartService
     private const CART_PRODUCTS = self::CART . '.products';
     private const CART_ADDRESS = self::CART . '.delivery-address-id';
     private const CART_GRAFICS = self::CART . '.grafic-ids';
+    private const CART_ORDER_OBJECTS = self::CART . '.order-objects';
 
     ///// PRODUCT
 
@@ -118,5 +120,30 @@ class CartService
     public function getAllGrafics(): ?array
     {
         return session(self::CART_GRAFICS);
+    }
+
+    public function createOrderObject(int $productId, array $grafics, int $quantity): OrderObject
+    {
+        return new OrderObject(['productId' => $productId, 'grafics' => $grafics, 'quantity' => $quantity]);
+    }
+
+    public function addOrderObject(OrderObject $orderObject): void
+    {
+        $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
+        $orderObjectsCollection->add($orderObject);
+        session()->put(self::CART_ORDER_OBJECTS, $orderObjectsCollection);
+    }
+
+    public function getOrderObjects(): Collection
+    {
+        return session(self::CART_ORDER_OBJECTS) ? : collect([]);
+    }
+
+    public function removeOrderObject(int $key): void
+    {
+
+        $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
+        $orderObjectsCollection->forget($key);
+        session()->put(self::CART_ORDER_OBJECTS, $orderObjectsCollection);
     }
 }
