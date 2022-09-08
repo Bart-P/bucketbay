@@ -30,4 +30,11 @@ class ProductsInCart extends Component
     {
         $this->cartService->removeProduct($id);
     }
+
+    public function addProductToOrderObjects($productId)
+    {
+        $orderObject = $this->cartService->createOrderObject($productId, [], 1);
+        $this->cartService->addOrderObject($orderObject);
+        $this->emit('orderObjectsChanged');
+    }
 }
