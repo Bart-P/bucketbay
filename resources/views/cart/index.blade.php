@@ -9,15 +9,6 @@
                 <x-delivery-address :address="$address"></x-delivery-address>
                 @livewire('products-in-cart')
             </div>
-
-            <!--
-            <hr class="my-4">
-            <div class="">
-                <h3 class="text-primary mb-4">Druckdaten</h3>
-                This part has an @ and a space, space needs to removed
-                @ livewire('grafics-in-cart')
-            </div>
-            -->
             <hr class="my-4">
             <div class="">
                 <h3 class="text-primary mb-4">Bestellobjekte</h3>
