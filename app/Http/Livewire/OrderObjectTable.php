@@ -23,10 +23,6 @@ class OrderObjectTable extends Component
     {
         $productsInCart = Product::findMany($this->cartService->getProducts()->keys());
         $productsWithQuantitiesInCart = [];
-        foreach ($productsInCart as $product) {
-            $productsWithQuantitiesInCart[] = ['product'  => $product,
-                                               'quantity' => $this->cartService->getQuantity($product->id)];
-        }
         $cartData = ['products'     => $productsInCart,
                      'inCart'       => $productsWithQuantitiesInCart,
                      'orderObjects' => $this->cartService->getOrderObjects()];
