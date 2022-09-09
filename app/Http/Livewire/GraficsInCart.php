@@ -1,5 +1,8 @@
 <?php
 
+// TODO this has to be deleted? Replaced by Orderobject..
+
+
 namespace App\Http\Livewire;
 
 use App\Models\Grafic;

@@ -1,3 +1,5 @@
+{{--TODO this has to be deleted? Got replaced by orderobject view. --}}
+
 <div class="d-flex gap-3 flex-column" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="">
         <div class="">
