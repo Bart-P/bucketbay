@@ -16,11 +16,9 @@
             <td class="p-3 align-middle text-center">
                 {{ $orderObject['quantity'] }}x
             </td>
-            <td>
-                {{--
-                                <img src="{{ getGraficPath($orderObject['productId']) }}"
-                                     class="img-fluid" style="height: 100px" alt="">
-                --}}
+            <td class="text-center align-middle">
+                <img src="{{ asset('images/items/' . $products->find($orderObject['productId'])->image) }}"
+                     class="img-fluid" style="height: 100px" alt="">
             </td>
             <td>
                 <div class="d-flex h-100 align-middle align-items-center">
@@ -29,16 +27,22 @@
                 </div>
             </td>
             <td>
-                <div class="d-flex h-100 justify-content-between align-items-center gap-3">
-                    {{--
-                                        <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficFrontId'])->file)}}"
-                                             class="img-fluid rounded" style="height: 50px; width: 75px; object-fit: cover;" alt="">
-                    {{ $grafics->find($printable['graficFrontId'])->name }}
-                    --}}
-                    <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
+                <div class="d-flex h-100 justify-content-center align-items-center gap-3">
+                    @if(count($orderObject['grafics']) < 1 )
+                        {{--
+                                            <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficFrontId'])->file)}}"
+                                                 class="img-fluid rounded" style="height: 50px; width: 75px; object-fit: cover;" alt="">
+                        {{ $grafics->find($printable['graficFrontId'])->name }}
+                        --}}
+                        <button class="btn btn-lg btn-outline-primary border-0"><i
+                                    class="bi-printer"></i>
+                        </button>
+                    @else
+                        <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
+                    @endif
                 </div>
             </td>
-            <td class="d-flex h-100 justify-content-between align-items-center">
+            <td class="d-flex h-100 justify-content-center align-items-center">
                 {{--
                                 @if( $printable['graficBackId'] !== null )
                                     <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficBackId'])->file)}}"
@@ -48,15 +52,24 @@
                     <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
                 @else
                 --}}
-                <button class="btn btn-lg btn-outline-primary mx-auto border-0"><i
-                            class="bi-printer"></i>
-                </button>
+                @if(count($orderObject['grafics']) === 1 )
+                    <button class="btn btn-lg btn-outline-primary border-0"><i
+                                class="bi-printer"></i>
+                    </button>
+                @elseif(count($orderObject['grafics']) > 1)
+                    {{--
+                                        <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficFrontId'])->file)}}"
+                                             class="img-fluid rounded" style="height: 50px; width: 75px; object-fit: cover;" alt="">
+                    {{ $grafics->find($printable['graficFrontId'])->name }}
+                    --}}
+                    <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
+                @endif
                 {{--
                                 @endif
                 --}}
             </td>
             <td>
-                <div class="d-flex justify-content-end align-items-center gap-2 h-100">
+                <div class="d-flex justify-content-center align-items-center gap-2 h-100">
                     <label>
                         <input name="productQuantity" type="number"
                                value={{ $orderObject['quantity'] }} class="form-control" min=0
