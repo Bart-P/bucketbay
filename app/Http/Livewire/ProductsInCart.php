@@ -13,6 +13,7 @@ class ProductsInCart extends Component
 {
     public array $newProductQuantities = [];
     private CartService $cartService;
+    protected $listeners = ['orderObjectsChanged' => 'render'];
 
     public function boot(CartService $cartService): void
     {
@@ -29,6 +30,7 @@ class ProductsInCart extends Component
     public function deleteProductFromCart($id): void
     {
         $this->cartService->removeProduct($id);
+        $this->emit('orderObjectsChanged');
     }
 
     public function addProductToOrderObjects($productId)
@@ -36,5 +38,21 @@ class ProductsInCart extends Component
         $orderObject = $this->cartService->createOrderObject($productId, [], 1);
         $this->cartService->addOrderObject($orderObject);
         $this->emit('orderObjectsChanged');
+    }
+
+    public function removeProductAndAssociatedOrderObjects(int $productId)
+    {
+        $this->cartService->removeProductFromCart($productId);
+        $this->emit('orderObjectsChanged');
+    }
+
+    public function productIsInOrderObjects(int $productId): bool
+    {
+        foreach ($this->cartService->getOrderObjects() as $order) {
+            if ($order['productId'] === $productId) {
+                return true;
+            }
+        }
+        return false;
     }
 }

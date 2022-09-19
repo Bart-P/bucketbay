@@ -6,13 +6,17 @@
                 <div>
                     {{ $product->name }}
                 </div>
-                @if($product->printable)
-                    <button wire:click="addProductToOrderObjects({{ $product->id }})"
-                            class="btn btn-outline-success border-0 ms-auto">
-                        <i class="bi-plus-circle"></i></button>
-                @else
-                    <button class="btn btn-outline-danger border-0 ms-auto"><i class="bi-trash"></i></button>
-                @endif
+                <div class="">
+                    <button class="btn btn-outline-danger border-0 ms-auto"
+                            wire:click="removeProductAndAssociatedOrderObjects({{ $product['id'] }})"><i
+                                class="bi-trash"></i>
+                    </button>
+                    @if($product->printable || !$this->productIsInOrderObjects($product->id))
+                        <button wire:click="addProductToOrderObjects({{ $product->id }})"
+                                class="btn btn-outline-success border-0 ms-auto">
+                            <i class="bi-plus-circle"></i></button>
+                    @endif
+                </div>
             </li>
         @endforeach
     </ul>
