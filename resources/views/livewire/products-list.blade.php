@@ -18,10 +18,10 @@
                         {{ $item['description'] }}
                     </p>
 
-                    <div class="{{ $cartService->productIdIsSet($item->id) > 0 ? 'd-flex justify-content-between' : ''}}">
+                    <div class="{{ $cartService->productIdIsSet($item->id) ? 'd-flex justify-content-between' : ''}}">
 
                         @if($cartService->productIdIsSet($item->id))
-                            <button wire:click="removeOneProductFromCart({{$item->id}})" type="button"
+                            <button wire:click="removeProductFromCart({{$item->id}})" type="button"
                                     class="btn btn-danger">
                                 <i class="bi-dash-circle-fill"></i>
                             </button>
@@ -33,7 +33,7 @@
                         @endif
 
                         <button wire:click="addOneProductToCart({{$item->id}})" type="button"
-                                class="btn {{ $cartService->productIdIsSet($item->id) > 0 ? 'btn-success' : 'btn-outline-success float-end'}}">
+                                class="btn {{ $cartService->productIdIsSet($item->id) ? 'btn-success' : 'btn-outline-success float-end'}}">
                             <i class="bi-basket3-fill"></i>
                         </button>
                     </div>
