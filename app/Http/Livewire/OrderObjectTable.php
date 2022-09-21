@@ -14,6 +14,9 @@ class OrderObjectTable extends Component
     protected $listeners = ['orderObjectsChanged' => 'render'];
     private CartService $cartService;
 
+    // TODO how to get input value as well as key of orderObject to change.. Only livewire or js needed? It should not be needed.
+    public $quantity = 0;
+
     public function boot(CartService $cartService)
     {
         $this->cartService = $cartService;
