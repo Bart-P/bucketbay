@@ -69,7 +69,9 @@
                 --}}
             </td>
             <td>
-                <div class="d-flex justify-content-center align-items-center gap-2 h-100">
+                <form wire:submit.prevent="updateQuantity({{$key}})"
+                      class="d-flex justify-content-center align-items-center gap-2 h-100">
+                    @csrf
                     <label>
                         <input name="productQuantity" type="number"
                                value={{ $orderObject['quantity'] }} class="form-control" min=0
@@ -79,7 +81,7 @@
                                 class="bi-save"></i>
                     </button>
 
-                </div>
+                </form>
             </td>
             <td class="text-center align-middle">
                 <button wire:click="removeOrderObjectFromCart({{ $key }})"
