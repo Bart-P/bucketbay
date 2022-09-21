@@ -18,22 +18,20 @@ class CartService
         return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : collect([]);
     }
 
-    public function addOneProduct(int $id): void
+    public function addProduct(int $id): void
     {
         $cartProducts = session(self::CART_PRODUCTS);
         if ($cartProducts) {
-            $currentCartProductIds = collect($cartProducts);
-            if ($this->productIdIsSet($id)) {
-                $currentCartProductIds[$id] += 1;
-            } else {
-                $currentCartProductIds->put($id, 1);
+            if (!$this->productIdIsSet($id)) {
+                session()->put(self::CART_PRODUCTS, collect($cartProducts)->put($id, 1));
             }
-            session()->put(self::CART_PRODUCTS, $currentCartProductIds);
         } else {
-            session()->put(self::CART_PRODUCTS, collect([$id => 1]));
+            session()->put(self::CART_PRODUCTS, collect([])->put($id, 1));
         }
 
-        $this->addOrderObject($this->createEmptyOrderObject($id));
+        if (!$this->getOrderObjects()->contains('productId', $id)) {
+            $this->addOrderObject($this->createEmptyOrderObject($id));
+        }
     }
 
     public function productIdIsSet(int $id): bool
@@ -50,17 +48,6 @@ class CartService
         }
 
         return $quantityInCart;
-    }
-
-    public function getProductIdsWithQuantitiesFromCart(): array
-    {
-        $idsWithQuantities = [];
-        $currentOrderObjects = $this->getOrderObjects();
-        foreach ($currentOrderObjects as $order) {
-            $idsWithQuantities[$order['productId']] = $order['quantity'];
-        }
-
-        return $idsWithQuantities;
     }
 
     public function removeProductFromCart(int $productId): void
@@ -114,7 +101,7 @@ class CartService
     public function updateOrderObjectQuantity($key, $quantity): void
     {
         // TODO need to update the quantity of 1 orderObject in cart... Did not test this
-        $orderObjectsInCart = $this->getOrderObjects();
+        $orderObjectsInCart = collect($this->getOrderObjects());
         $objectToUpdate = collect($orderObjectsInCart->get($key));
         $objectToUpdate->put('quantity', $quantity);
         $orderObjectsInCart->put($key, $objectToUpdate);
@@ -173,7 +160,6 @@ class CartService
 
     public function removeOrderObject(int $key): void
     {
-
         $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
         $orderObjectsCollection->forget($key);
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsCollection);
