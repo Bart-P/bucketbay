@@ -25,16 +25,11 @@ class ProductsList extends Component
 
     public function addOneProductToCart($id): void
     {
-        $this->cartService->addOneProduct($id);
+        $this->cartService->addProduct($id);
     }
 
-    public function removeOneProductFromCart($id): void
+    public function removeProductFromCart($id): void
     {
-        $this->cartService->removeOneProduct($id);
-    }
-
-    public function getQuantityOfProductInCart($id): int
-    {
-        return $this->cartService->getQuantity($id);
+        $this->cartService->removeProductFromCart($id);
     }
 }
