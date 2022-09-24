@@ -100,14 +100,14 @@
                 </a>
             </td>
             <td x-data="{ open: false }">
-                <form x-show="open" @click.outside="open = false" method="POST"
+                <form x-show="open" @click.outside="open = false" x-cloak method="POST"
                       action="/grafics/{{ $grafic->id }}">
                     @csrf
                     @method('PUT')
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-sm btn-success"><i class="bi-save"></i>
                         </button>
-                        <input type=" text" name="name" class="form-control form-control-sm"
+                        <input type="text" name="name" class="form-control form-control-sm"
                                value="{{ $grafic->name }}">
                     </div>
                 </form>
