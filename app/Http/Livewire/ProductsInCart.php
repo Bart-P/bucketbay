@@ -48,6 +48,7 @@ class ProductsInCart extends Component
 
     public function productIsInOrderObjects(int $productId): bool
     {
+        // TODO this could be done with a simple find on getOrderObjects() ??
         foreach ($this->cartService->getOrderObjects() as $order) {
             if ($order['productId'] === $productId) {
                 return true;
