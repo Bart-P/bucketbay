@@ -1,0 +1,26 @@
+[x-cloak] {
+    display: none !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.9;
+}
+
+.modal-card {
+    max-width: 1000px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 90vh;
+    overflow: scroll;
+    z-index: 99;
+}
+
+.grafic-preview-sm {
+    height: 50px;
+    width: 75px;
+}
