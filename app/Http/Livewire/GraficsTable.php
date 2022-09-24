@@ -4,9 +4,13 @@ namespace App\Http\Livewire;
 
 use App\Models\Grafic;
 use App\Services\CartService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GraficsTable extends Component
 {
@@ -33,7 +37,7 @@ class GraficsTable extends Component
         $this->resetPage();
     }
 
-    public function render()
+    public function render(): Factory|View|Application
     {
         return view('livewire.grafics-table', ['grafics' => Grafic::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage)]);
     }
@@ -43,7 +47,7 @@ class GraficsTable extends Component
         $this->selectedImageId = $imageId;
     }
 
-    public function downloadFile(string $fileName)
+    public function downloadFile(string $fileName): StreamedResponse
     {
         return Storage::download('public/grafics/' . $fileName);
     }
