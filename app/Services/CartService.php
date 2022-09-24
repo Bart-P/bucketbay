@@ -44,7 +44,9 @@ class CartService
         $quantityInCart = 0;
         $currentOrderObjects = $this->getOrderObjects();
         foreach ($currentOrderObjects as $order) {
-            if ($order['productId'] === $productId) $quantityInCart += $order['quantity'];
+            if ($order['productId'] === $productId) {
+                $quantityInCart += $order['quantity'];
+            }
         }
 
         return $quantityInCart;
@@ -56,7 +58,9 @@ class CartService
         $keysToRemove = [];
 
         foreach ($orderObjects as $key => $order) {
-            if ($order['productId'] === $productId) $orderObjects = $orderObjects->forget($key);
+            if ($order['productId'] === $productId) {
+                $orderObjects = $orderObjects->forget($key);
+            }
         }
 
         $this->removeProduct($productId);
@@ -67,17 +71,6 @@ class CartService
     {
         $productsInCart = collect(session(self::CART_PRODUCTS));
         session()->put(self::CART_PRODUCTS, $productsInCart->forget($id));
-    }
-
-    public function removeOneProduct($id): void
-    {
-        $currendCartProductIds = collect(session(self::CART_PRODUCTS));
-        if ($this->productIdIsSet($id)) {
-            $currendCartProductIds[$id] -= 1;
-            if ($currendCartProductIds[$id] <= 0) $currendCartProductIds->pull($id);
-
-            session()->put(self::CART_PRODUCTS, $currendCartProductIds);
-        }
     }
 
     public function addOrderObject(OrderObject $orderObject): void
@@ -100,13 +93,12 @@ class CartService
 
     public function updateOrderObjectQuantity($key, $quantity): void
     {
-        // TODO need to update the quantity of 1 orderObject in cart... Did not test this
         $orderObjectsInCart = collect($this->getOrderObjects());
         $objectToUpdate = collect($orderObjectsInCart->get($key));
         $objectToUpdate->put('quantity', $quantity);
         $orderObjectsInCart->put($key, $objectToUpdate);
 
-        dd($orderObjectsInCart);
+        session()->put(self::CART_ORDER_OBJECTS, $orderObjectsInCart);
     }
 
     public function addAddressId(int $id): void
