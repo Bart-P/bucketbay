@@ -1,5 +1,5 @@
 <x-layout>
-    <main>
+    <main x-data="{'showModal': false}" @keydown.esc="showModal = false" x-cloak>
         <x-banner>
             <x-slot:heading> Warenkorb</x-slot:heading>
             Hier eine kurze beschreibung wie der Warenkorb funktioniert...
@@ -19,6 +19,5 @@
                 <button class="btn btn-primary btn-lg" type="submit">Bestellung auslösen</button>
             </div>
         </div>
-
     </main>
 </x-layout>
