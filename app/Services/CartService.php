@@ -10,7 +10,6 @@ class CartService
     private const CART = 'shopping-cart';
     private const CART_PRODUCTS = self::CART . '.products';
     private const CART_ADDRESS = self::CART . '.delivery-address-id';
-    private const CART_GRAFICS = self::CART . '.grafic-ids';
     private const CART_ORDER_OBJECTS = self::CART . '.order-objects';
 
     public function getProducts(): Collection
