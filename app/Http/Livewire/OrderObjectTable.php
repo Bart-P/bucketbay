@@ -72,7 +72,7 @@ class OrderObjectTable extends Component
         } else {
             $this->cartService->updateOrderObjectQuantity($orderObjectKey, $this->newQuantities[$orderObjectKey]);
         }
-        $this->orderObjectsChanged();
+        $this->emit('orderObjectsChanged');
     }
 
     public function selectGraficForOrderObject(int $key)
@@ -80,13 +80,21 @@ class OrderObjectTable extends Component
         $this->selectedOrderObjectKey = $key;
     }
 
-    public function getAllGrafics(): ?array
-    {
-        return $this->cartService->getAllGrafics();
-    }
-
     public function selectGrafic($id)
     {
         $this->selectedGraficId = $id;
+        $this->setGraficForOrderObject($this->selectedOrderObjectKey, $id);
+    }
+
+    public function setGraficForOrderObject(int $orderObjectKey, int $graficId)
+    {
+        $this->cartService->setGraficForOrderObject($orderObjectKey, $graficId);
+        $this->emit('orderObjectsChanged');
+    }
+
+    public function removeGraficsFromOrderObject(int $orderObjectKey, int $graficsArrayKey)
+    {
+        $this->cartService->removeGraficFromOrderObject($orderObjectKey, $graficsArrayKey);
+        $this->emit('orderObjectsChanged');
     }
 }
