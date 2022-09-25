@@ -51,9 +51,4 @@ class GraficsTable extends Component
     {
         return Storage::download('public/grafics/' . $fileName);
     }
-
-    public function toggleGraficsIdInCart(int $graficsId)
-    {
-        $this->cartService->addOrRemoveGraficsId($graficsId);
-    }
 }
