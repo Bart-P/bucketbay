@@ -27,50 +27,33 @@
                         <span class="ms-2 text-muted fs-6 fst-italic">id: {{ $orderObject['productId'] }}</span>
                     </div>
                 </td>
-                <td>
-                    <div class="d-flex h-100 justify-content-center align-items-center gap-3">
-                        @if(count($orderObject['grafics']) < 1 && $products->find($orderObject['productId'])->printable )
-                            {{--
-                                                <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficFrontId'])->file)}}"
-                                                     class="img-fluid rounded" style="height: 50px; width: 75px; object-fit: cover;" alt="">
-                            {{ $grafics->find($printable['graficFrontId'])->name }}
-                            --}}
-                            <button wire:click="selectGraficForOrderObject({{ $key }})"
-                                    x-on:click="showModal = true"
-                                    class="btn btn-lg btn-outline-primary border-0"><i
-                                        class="bi-printer"></i>
-                            </button>
-                        @else
-                            <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
-                        @endif
-                    </div>
-                </td>
-                <td class="d-flex h-100 justify-content-center align-items-center">
-                    {{--
-                                    @if( $printable['graficBackId'] !== null )
-                                        <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficBackId'])->file)}}"
-                                             class="img-fluid rounded" style="height: 50px; width: 75px; object-fit: cover;"
+                @for($i=0; $i<2; $i++)
+                    <td>
+                        <div class="d-flex h-100 justify-content-center align-items-center gap-3">
+                            @if(isset($orderObject['grafics'][$i]) && $grafics->find($orderObject['grafics'][$i]))
+                                <div class="h-100 w-100" style="position: relative;">
+                                    <div class="d-flex justify-content-center align-items-center h-100">
+                                        <img src="{{asset('storage/grafics/' . $grafics->find($orderObject['grafics'][$i])['file'])}}"
+                                             class="img-fluid rounded m-auto"
+                                             style="height: 50px; width: 75px; object-fit: cover;"
                                              alt="">
-                                        {{ $grafics->find($printable['graficBackId'])->name }}
-                        <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
-                    @else
-                    --}}
-                    @if(count($orderObject['grafics']) === 1 )
-                        <button class="btn btn-lg btn-outline-primary border-0"><i
-                                    class="bi-printer"></i>
-                        </button>
-                    @elseif(count($orderObject['grafics']) > 1)
-                        {{--
-                                            <img src="{{asset('storage/grafics/' . $grafics->find($printable['graficFrontId'])->file)}}"
-                                                 class="img-fluid rounded" style="height: 50px; width: 75px; object-fit: cover;" alt="">
-                        {{ $grafics->find($printable['graficFrontId'])->name }}
-                        --}}
-                        <button class="btn btn-outline-secondary border-0"><i class="bi-x-circle"></i></button>
-                    @endif
-                    {{--
-                                    @endif
-                    --}}
-                </td>
+                                    </div>
+                                    <button wire:click="removeGraficsFromOrderObject({{$key}}, {{$i}})"
+                                            class="btn btn-sm btn-outline-secondary border-0 p-1 m-0"
+                                            style="position: absolute; top: 0; right: 0;"><i
+                                                class="bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            @elseif($products->find($orderObject['productId'])->printable)
+                                <button wire:click="selectGraficForOrderObject({{ $key }})"
+                                        x-on:click="showModal = true"
+                                        class="btn btn-lg btn-outline-primary border-0"><i
+                                            class="bi-printer"></i>
+                                </button>
+                            @endif
+                        </div>
+                    </td>
+                @endfor
                 <td>
                     <form wire:submit.prevent="updateQuantity({{$key}})"
                           class="d-flex justify-content-center align-items-center gap-2 h-100">
@@ -110,7 +93,8 @@
             </div>
             <table class="table table-hover">
                 @foreach($grafics as $grafic)
-                    <tr @click="$wire.selectGrafic({{$grafic['id']}}); showModal = false" class="align-middle p-2">
+                    <tr @click="$wire.selectGrafic({{$grafic['id']}}); showModal = false"
+                        class="align-middle p-2 grafic-select-object">
                         <td><img class="grafic-preview-sm" src="{{ asset('storage/grafics/' . $grafic['file']) }}"
                                  alt="">
                         </td>
