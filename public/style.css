@@ -24,3 +24,7 @@
     height: 50px;
     width: 75px;
 }
+
+.grafic-select-object {
+    cursor: pointer;
+}
