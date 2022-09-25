@@ -73,6 +73,21 @@ class CartService
         session()->put(self::CART_PRODUCTS, $productsInCart->forget($id));
     }
 
+    public function addAddressId(int $id): void
+    {
+        session()->put(self::CART_ADDRESS, $id);
+    }
+
+    public function getAddressId(): ?int
+    {
+        return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
+    }
+
+    public function addressIsSet(): bool
+    {
+        return session(self::CART_ADDRESS) != null;
+    }
+
     public function addOrderObject(OrderObject $orderObject): void
     {
         $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
@@ -101,53 +116,10 @@ class CartService
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsInCart);
     }
 
-    public function addAddressId(int $id): void
-    {
-        session()->put(self::CART_ADDRESS, $id);
-    }
-
-    public function getAddressId(): ?int
-    {
-        return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
-    }
-
-    public function addressIsSet(): bool
-    {
-        return session(self::CART_ADDRESS) != null;
-    }
-
-    /**
-     * Add or remove the grafics ID in the Cart:
-     *  - if the ID is present it will remove it
-     *  - if the ID is not present it will add it
-     *
-     * @param int $id
-     * @return void
-     */
-    public function addOrRemoveGraficsId(int $id): void
-    {
-        if ($graficsCartArray = session(self::CART_GRAFICS)) {
-            if (!in_array($id, $graficsCartArray)) {
-                array_unshift($graficsCartArray, $id);
-            } else {
-                array_splice($graficsCartArray, array_search($id, $graficsCartArray), 1);
-            }
-        } else {
-            $graficsCartArray = [$id];
-        }
-
-        session()->put(self::CART_GRAFICS, $graficsCartArray);
-    }
-
-    public function getAllGrafics(): ?array
-    {
-        return session(self::CART_GRAFICS);
-    }
-
     public function getOrderObjects(): Collection
     {
         $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
-        return $orderObjectsCollection->sortBy('productId') ? : collect([]);
+        return $orderObjectsCollection ? : collect([]);
     }
 
     public function removeOrderObject(int $key): void
@@ -155,5 +127,45 @@ class CartService
         $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
         $orderObjectsCollection->forget($key);
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsCollection);
+    }
+
+    public function setGraficForOrderObject(int $orderObjectKey, int $graficId): void
+    {
+        $orderObjects = $this->getOrderObjects();
+        if ($orderObjects->has($orderObjectKey)) {
+            $orderObject = collect($orderObjects->get($orderObjectKey));
+            $grafics = $orderObject['grafics'];
+            if (count($grafics) < 2) {
+                $grafics[] = $graficId;
+                $orderObject->put('grafics', $grafics);
+                $this->updateOrderObject($orderObjectKey, new OrderObject($orderObject->toArray()));
+            }
+        }
+    }
+
+    public function removeGraficFromOrderObject(int $orderObjectKey, int $graficArrayKey): void
+    {
+        $orderObjects = $this->getOrderObjects();
+        if ($orderObjects->has($orderObjectKey)) {
+            $orderObject = collect($orderObjects->get($orderObjectKey));
+            $grafics = $orderObject['grafics'];
+            if (count($grafics) < 3) {
+                if ($graficArrayKey === 0) {
+                    array_shift($grafics);
+                }
+                if ($graficArrayKey === 1) {
+                    array_pop($grafics);
+                }
+                $orderObject->put('grafics', $grafics);
+                $this->updateOrderObject($orderObjectKey, new OrderObject($orderObject->toArray()));
+            }
+        }
+    }
+
+    public function updateOrderObject(int $orderObjectKey, OrderObject $newOrderObject): void
+    {
+        $orderObjects = collect(session(self::CART_ORDER_OBJECTS));
+        $orderObjects->put($orderObjectKey, $newOrderObject);
+        session()->put(self::CART_ORDER_OBJECTS, $orderObjects);
     }
 }
