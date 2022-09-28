@@ -21,9 +21,10 @@
     @endif
 </header>
 
-<main class="h-100">
+<main class="h-100" x-data="{'showModal': false, 'showNotification': false}" @keydown.esc="showModal = false" x-cloak>
     {{ $slot }}
     <x-notification-msg></x-notification-msg>
+    @livewire('notification-pop-up')
 </main>
 
 <footer>
