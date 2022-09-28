@@ -81,9 +81,9 @@
     </table>
 
     <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
-         x-show="showModal" x-cloak>
+         x-show="showModal" x-cloak x-transition.opacity>
     </div>
-    <div x-show="showModal" @click.away="showModal=false" x-cloak class="card modal-card bg-white">
+    <div x-show="showModal" @click.away="showModal=false" x-cloak class="card modal-card bg-white" x-transition>
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="card-title">Grafik auswählen: </h5>
