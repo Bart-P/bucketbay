@@ -95,6 +95,11 @@ class OrderObjectTable extends Component
     public function removeGraficsFromOrderObject(int $orderObjectKey, int $graficsArrayKey)
     {
         $this->cartService->removeGraficFromOrderObject($orderObjectKey, $graficsArrayKey);
+        session()->put('notificationMessages', [['text' => 'Grafik aus dem Bestellobjekt entfernt!',
+                                                 'type' => 'success'],
+                                                ['text' => 'Grafik aus dem Bestellobjekt entfernt!',
+                                                 'type' => 'success']]);
+        $this->emit('notifyUser');
         $this->emit('orderObjectsChanged');
     }
 }
