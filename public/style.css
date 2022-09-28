@@ -2,6 +2,13 @@
     display: none !important;
 }
 
+.notificationWrapper {
+    position: fixed;
+    top: 80px;
+    right: 15px;
+    max-width: 300px;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
