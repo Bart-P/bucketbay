@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class OrderObjectTable extends Component
 {
-    protected $listeners = ['orderObjectsChanged', 'test'];
+    protected $listeners = ['orderObjectsChanged'];
     private CartService $cartService;
 
     public Collection $orderObjects;
@@ -33,6 +33,12 @@ class OrderObjectTable extends Component
     {
         $productsInCart = Product::findMany($this->cartService->getProducts()->keys());
         return view('livewire.order-object-table', ['products' => $productsInCart,]);
+    }
+
+    public function notify(string $msg, string $type)
+    {
+        session()->put('notificationMessage', ['message' => $msg, 'type' => $type]);
+        $this->emit('notifyUser');
     }
 
     public function orderObjectsChanged()
@@ -61,6 +67,7 @@ class OrderObjectTable extends Component
     public function removeOrderObjectFromCart(int $key): void
     {
         $this->cartService->removeOrderObject($key);
+        $this->notify('Bestellobjekt gelöscht', 'success');
         $this->emit('orderObjectsChanged');
     }
 
@@ -95,11 +102,7 @@ class OrderObjectTable extends Component
     public function removeGraficsFromOrderObject(int $orderObjectKey, int $graficsArrayKey)
     {
         $this->cartService->removeGraficFromOrderObject($orderObjectKey, $graficsArrayKey);
-        session()->put('notificationMessages', [['text' => 'Grafik aus dem Bestellobjekt entfernt!',
-                                                 'type' => 'success'],
-                                                ['text' => 'Grafik aus dem Bestellobjekt entfernt!',
-                                                 'type' => 'success']]);
-        $this->emit('notifyUser');
+        $this->notify('Grafik wurde aus dem Bestellobjekt gelöscht.', 'success');
         $this->emit('orderObjectsChanged');
     }
 }
