@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 class AddressesTable extends Component
 {
     use WithPagination;
+
     protected string $paginationTheme = 'bootstrap';
 
     public int $itemsPerPage = 15;
@@ -27,9 +28,7 @@ class AddressesTable extends Component
 
     public function render()
     {
-        return view('livewire.addresses-table', [
-            'addresses' => Address::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage),
-        ]);
+        return view('livewire.addresses-table', ['addresses' => Address::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage),]);
     }
 
     public function deleteConfirmation($address_id)
@@ -40,5 +39,7 @@ class AddressesTable extends Component
     public function setDeliveryAddressInCart($address_id)
     {
         session(['shopping-cart.delivery-address-id' => $address_id]);
+        session()->put('notificationMessage', ['message' => 'Addresse im Warenkorb gesetzt', 'type' => 'success']);
+        $this->emit('notifyUser');
     }
 }
