@@ -43,6 +43,7 @@ class ProductsInCart extends Component
     public function removeProductAndAssociatedOrderObjects(int $productId)
     {
         $this->cartService->removeProductFromCart($productId);
+        $this->emit('notifySuccess', 'Produkt aus dem Warenkorb entfernt.');
         $this->emit('orderObjectsChanged');
     }
 

@@ -3,6 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Address;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -26,7 +29,7 @@ class AddressesTable extends Component
         $this->resetPage();
     }
 
-    public function render()
+    public function render(): Factory|View|Application
     {
         return view('livewire.addresses-table', ['addresses' => Address::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage),]);
     }
@@ -39,7 +42,6 @@ class AddressesTable extends Component
     public function setDeliveryAddressInCart($address_id)
     {
         session(['shopping-cart.delivery-address-id' => $address_id]);
-        session()->put('notificationMessage', ['message' => 'Addresse im Warenkorb gesetzt', 'type' => 'success']);
-        $this->emit('notifyUser');
+        $this->emit('notifySuccess', 'Lieferadresse gesetzt');
     }
 }

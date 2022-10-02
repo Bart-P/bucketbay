@@ -35,12 +35,6 @@ class OrderObjectTable extends Component
         return view('livewire.order-object-table', ['products' => $productsInCart,]);
     }
 
-    public function notify(string $msg, string $type)
-    {
-        session()->put('notificationMessage', ['message' => $msg, 'type' => $type]);
-        $this->emit('notifyUser');
-    }
-
     public function orderObjectsChanged()
     {
         $this->refreshOrderObjects();
@@ -67,11 +61,9 @@ class OrderObjectTable extends Component
     public function removeOrderObjectFromCart(int $key): void
     {
         $this->cartService->removeOrderObject($key);
-        $this->notify('Bestellobjekt gelöscht', 'success');
         $this->emit('orderObjectsChanged');
     }
 
-    //TODO notification needed to let user know that the quantitity was updated.
     public function updateQuantity($orderObjectKey)
     {
         if ($this->newQuantities[$orderObjectKey] < 1) {
@@ -79,6 +71,7 @@ class OrderObjectTable extends Component
         } else {
             $this->cartService->updateOrderObjectQuantity($orderObjectKey, $this->newQuantities[$orderObjectKey]);
         }
+        $this->emit('notifySuccess', 'Auflange geändert!');
         $this->emit('orderObjectsChanged');
     }
 
@@ -102,7 +95,6 @@ class OrderObjectTable extends Component
     public function removeGraficsFromOrderObject(int $orderObjectKey, int $graficsArrayKey)
     {
         $this->cartService->removeGraficFromOrderObject($orderObjectKey, $graficsArrayKey);
-        $this->notify('Grafik wurde aus dem Bestellobjekt gelöscht.', 'success');
         $this->emit('orderObjectsChanged');
     }
 }
