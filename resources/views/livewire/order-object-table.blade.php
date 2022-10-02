@@ -9,7 +9,7 @@
             <th>Menge Ändern</th>
             <th></th>
         </tr>
-        @foreach($orderObjects as $key => $orderObject)
+        @foreach($orderObjects->sortBy('productId') as $key => $orderObject)
 
             <tr>
                 <td class="p-3 align-middle text-center">
