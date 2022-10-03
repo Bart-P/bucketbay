@@ -18,7 +18,11 @@ return new class () extends Migration {
             $table->longText('description');
             $table->string('image');
             $table->boolean('printable');
-            $table->string('external_id');
+            $table->boolean('show');
+            $table->string('external_id')->nullable();
+            $table->json('product_list')->nullable();
+            $table->bigInteger('price_in_cent');
+            $table->bigInteger('quantity_available');
             $table->timestamps();
         });
     }
