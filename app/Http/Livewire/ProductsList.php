@@ -32,4 +32,19 @@ class ProductsList extends Component
     {
         $this->cartService->removeProductFromCart($id);
     }
+
+    public function productIdIsSetInCart(int $id): bool
+    {
+        return $this->cartService->productIdIsSet($id);
+    }
+
+    public function getProductQuantityFromCart(int $id): int
+    {
+        return $this->cartService->getQuantityInCart($id);
+    }
+
+    public function formatCurrency(int $priceInCent): string
+    {
+        return number_format($priceInCent / 100, 2, ',');
+    }
 }
