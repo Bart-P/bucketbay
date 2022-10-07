@@ -91,7 +91,6 @@ class CartService
     {
         $orderObjectsCollection = collect(session(self::CART_ORDER_OBJECTS));
         $orderObjectsCollection->add($orderObject);
-        $orderObjectsCollection = $orderObjectsCollection->sortBy('productId');
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsCollection);
     }
 
