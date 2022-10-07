@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product;
 use App\Services\CartService;
+use App\Services\ProductService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,15 +12,18 @@ use Livewire\Component;
 class ProductsList extends Component
 {
     protected CartService $cartService;
+    protected ProductService $productService;
 
-    public function boot(CartService $cartService)
+    public function boot(CartService $cartService, ProductService $productService)
     {
         $this->cartService = $cartService;
+        $this->productService = $productService;
     }
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.products-list', ['items' => Product::all()]);
+        $products = $this->productService->getAllProducts();
+        return view('livewire.products-list', ['items' => $products]);
     }
 
     public function addOneProductToCart($id): void
@@ -45,6 +48,6 @@ class ProductsList extends Component
 
     public function formatCurrency(int $priceInCent): string
     {
-        return number_format($priceInCent / 100, 2, ',');
+        return $this->productService->formatCurrency($priceInCent);
     }
 }

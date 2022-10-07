@@ -13,10 +13,15 @@
                     </div>
 
                     <div class="card-body ">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="card-text">
+                                {{ $item['quantity_available'] }} Stück Verfügbar
+                            </span>
+                            <span class="card-text">
+                                ab {{ $this->formatCurrency($item['price_in_cent']) }}€
+                            </span>
 
-                        <p class="card-text">
-                            ab {{ $this->formatCurrency($item['price_in_cent']) }}€
-                        </p>
+                        </div>
 
                         <div class="{{ $this->productIdIsSetInCart($item->id) ? 'd-flex justify-content-between' : ''}}">
 
