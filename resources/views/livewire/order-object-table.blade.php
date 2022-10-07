@@ -2,11 +2,13 @@
     <table class="table table-bordered h-100">
         <tr class="text-center">
             <th>Menge</th>
+            <th>€/St.</th>
             <th>Bild</th>
             <th>Name</th>
             <th>Grafik1</th>
             <th>Grafik2</th>
             <th>Menge Ändern</th>
+            <th>Verfügbar</th>
             <th></th>
         </tr>
         @foreach($orderObjects->sortBy('productId') as $key => $orderObject)
@@ -17,9 +19,12 @@
                         {{ $orderObject['quantity'] }}x
                     </b>
                 </td>
+                <td class="p-3 align-middle text-center">
+                    {{ $this->productService->formatCurrency($products->find($orderObject['productId'])->price_in_cent) }}
+                </td>
                 <td class="text-center align-middle">
                     <img src="{{ asset('images/items/' . $products->find($orderObject['productId'])->image) }}"
-                         class="img-fluid" style="height: 100px" alt="">
+                         class="img-fluid product-image-sm" alt="">
                 </td>
                 <td>
                     <div class="d-flex h-100 align-middle align-items-center">
@@ -69,6 +74,9 @@
                         </button>
 
                     </form>
+                </td>
+                <td class="p-3 align-middle text-center">
+                    {{ $products->find($orderObject['productId'])->quantity_available }}
                 </td>
                 <td class="text-center align-middle">
                     <button wire:click="removeOrderObjectFromCart({{ $key }})"
