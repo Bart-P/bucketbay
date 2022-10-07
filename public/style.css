@@ -2,6 +2,12 @@
     display: none !important;
 }
 
+.product-image-sm {
+    height: 100px;
+    max-width: 75px;
+    object-fit: contain;
+}
+
 .notificationWrapper {
     position: fixed;
     top: 80px;
