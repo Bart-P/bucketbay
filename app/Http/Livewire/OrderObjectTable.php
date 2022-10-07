@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Grafic;
 use App\Models\Product;
 use App\Services\CartService;
+use App\Services\ProductService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -14,7 +15,9 @@ use Livewire\Component;
 class OrderObjectTable extends Component
 {
     protected $listeners = ['orderObjectsChanged'];
+
     private CartService $cartService;
+    private ProductService $productService;
 
     public Collection $orderObjects;
     public $newQuantities = [];
@@ -22,16 +25,18 @@ class OrderObjectTable extends Component
     public $selectedOrderObjectKey;
     public $selectedGraficId;
 
-    public function boot(CartService $cartService)
+    public function boot(CartService $cartService, ProductService $productService)
     {
         $this->cartService = $cartService;
+        $this->productService = $productService;
         $this->orderObjectsChanged();
         $this->grafics = Grafic::latest('updated_at')->get();
     }
 
     public function render(): Factory|View|Application
     {
-        $productsInCart = Product::findMany($this->cartService->getProducts()->keys());
+        // TODO items DB is now querried twice, once 1 line below and once through refreshOrderObjects method, this should be optimized
+        $productsInCart = $this->productService->updateProductQuantities(Product::findMany($this->cartService->getProducts()->keys()));
         return view('livewire.order-object-table', ['products' => $productsInCart,]);
     }
 
