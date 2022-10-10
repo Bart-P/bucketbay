@@ -11,20 +11,20 @@ use Livewire\Component;
 
 class ProductsInCart extends Component
 {
-    public array $newProductQuantities = [];
     private CartService $cartService;
     protected $listeners = ['orderObjectsChanged' => 'render'];
 
     public function boot(CartService $cartService): void
     {
         $this->cartService = $cartService;
-        $this->newProductQuantities = $this->cartService->getProducts()->toArray();
     }
 
     public function render(): Factory|View|Application
     {
         $productsInCart = $this->cartService->getProducts();
-        return view('livewire.products-in-cart', ['products' => Product::find($productsInCart->keys())]);
+        return view('livewire.products-in-cart', ['products' => Product::find($productsInCart->keys(), ['id',
+                                                                                                        'name',
+                                                                                                        'printable'])]);
     }
 
     public function deleteProductFromCart($id): void
@@ -49,7 +49,6 @@ class ProductsInCart extends Component
 
     public function productIsInOrderObjects(int $productId): bool
     {
-        // TODO this could be done with a simple find on getOrderObjects() ??
         foreach ($this->cartService->getOrderObjects() as $order) {
             if ($order['productId'] === $productId) {
                 return true;
