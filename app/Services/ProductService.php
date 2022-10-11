@@ -30,19 +30,11 @@ class ProductService
     public function updateProductQuantities(Collection $products): Collection
     {
         $products->map(function ($product) use ($products) {
-            if ($product['product_list']) {
-                $productList = json_decode($product['product_list']);
-                if ($productList && count($productList) > 1) {
-                    $quantities = [];
-                    foreach ($productList as $productId) {
-                        if ($products->find($productId)) {
-                            $quantities[] = $products->find($productId)['quantity_available'];
-                        }
-                    }
-                    if (!empty($quantities)) $product['quantity_available'] = min($quantities);
-                }
+            $productList = json_decode($product['product_list']);
+            if ($productList && count($productList) > 0) {
+                $quantities = Product::find($productList, ['quantity_available'])->pluck('quantity_available')->toArray();
+                $product['quantity_available'] = min($quantities);
             }
-
         });
         return $products;
     }

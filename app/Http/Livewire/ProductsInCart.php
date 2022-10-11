@@ -12,7 +12,7 @@ use Livewire\Component;
 class ProductsInCart extends Component
 {
     private CartService $cartService;
-    protected $listeners = ['orderObjectsChanged' => 'render'];
+    protected $listeners = ['orderObjectsDeleted' => 'render'];
 
     public function boot(CartService $cartService): void
     {
@@ -31,6 +31,7 @@ class ProductsInCart extends Component
     {
         $this->cartService->removeProduct($id);
         $this->emit('orderObjectsChanged');
+        $this->emit('orderObjectsDeleted');
     }
 
     public function addProductToOrderObjects($productId)
