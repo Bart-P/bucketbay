@@ -18,6 +18,7 @@ class AddressesTable extends Component
     public int $itemsPerPage = 15;
     public string $search = '';
     public int $selected_address_id = 0;
+    public Address $selectedAddress;
 
     public function updatingSearch()
     {
@@ -34,9 +35,10 @@ class AddressesTable extends Component
         return view('livewire.addresses-table', ['addresses' => Address::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage),]);
     }
 
-    public function deleteConfirmation($address_id)
+    public function setAddressToBeDeleted(Address $address)
     {
-        $this->selected_address_id = $address_id;
+        $this->selected_address_id = $address['id'];
+        $this->selectedAddress = $address;
     }
 
     public function setDeliveryAddressInCart($address_id)
@@ -44,4 +46,10 @@ class AddressesTable extends Component
         session(['shopping-cart.delivery-address-id' => $address_id]);
         $this->emit('notifySuccess', 'Lieferadresse gesetzt');
     }
+
+    public function deleteAddress(Address $address)
+    {
+        // TODO write the delete logic - if address is selected in cart it should be deleted from cart..
+    }
+
 }

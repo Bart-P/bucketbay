@@ -1,4 +1,4 @@
-<x-table-wrapper>
+<x-table-wrapper x-data>
     <x-table-controlls-wrapper>
         <a class="btn btn-outline-primary m-4" href="/addresses/create">
             Adresse Hinzufügen
@@ -7,7 +7,7 @@
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -26,56 +26,92 @@
     </div>
     <table class="table table-hover table-responsive">
         <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name1</th>
-                <th scope="col">Name2</th>
-                <th scope="col">Name3</th>
-                <th scope="col">Straße</th>
-                <th scope="col">H.Nr.</th>
-                <th scope="col">Stadt</th>
-                <th scope="col">PLZ</th>
-                <th scope="col">Land</th>
-                <th scope="col"></th>
-            </tr>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name1</th>
+            <th scope="col">Name2</th>
+            <th scope="col">Name3</th>
+            <th scope="col">Straße</th>
+            <th scope="col">H.Nr.</th>
+            <th scope="col">Stadt</th>
+            <th scope="col">PLZ</th>
+            <th scope="col">Land</th>
+            <th scope="col"></th>
+        </tr>
         </thead>
 
         <tbody>
-            @foreach ($addresses as $address)
-                <tr>
-                    <th scope="row">{{ $address->id }}</th>
-                    <td>{{ $address->name1 }}</td>
-                    <td>{{ $address->name2 }}</td>
-                    <td>{{ $address->name3 }}</td>
-                    <td>{{ $address->street }}</td>
-                    <td>{{ $address->street_nr }}</td>
-                    <td>{{ $address->city }}</td>
-                    <td>{{ $address->city_code }}</td>
-                    <td>{{ $address->country }}</td>
-                    <td style="">
-                        <div class="d-flex justify-content-end gap-2">
-                            <button wire:click="setDeliveryAddressInCart({{ $address->id }})"
+        @foreach ($addresses as $address)
+            <tr>
+                <th scope="row">{{ $address->id }}</th>
+                <td>{{ $address->name1 }}</td>
+                <td>{{ $address->name2 }}</td>
+                <td>{{ $address->name3 }}</td>
+                <td>{{ $address->street }}</td>
+                <td>{{ $address->street_nr }}</td>
+                <td>{{ $address->city }}</td>
+                <td>{{ $address->city_code }}</td>
+                <td>{{ $address->country }}</td>
+                <td style="">
+                    <div class="d-flex justify-content-end gap-2">
+                        <button wire:click="setDeliveryAddressInCart({{ $address->id }})"
                                 class="btn {{ session('shopping-cart.delivery-address-id') == $address->id ? 'btn-success' : 'btn-outline-success' }}"
                                 style="border: none;">
-                                <i class="bi-basket3-fill"></i>
-                            </button>
+                            <i class="bi-basket3-fill"></i>
+                        </button>
 
-                            <a class="btn btn-outline-primary" style="border: none;"
-                                href="/addresses/{{ $address->id }}/edit">
-                                <i class="bi-pencil"></i>
-                            </a>
+                        <a class="btn btn-outline-primary" style="border: none;"
+                           href="/addresses/{{ $address->id }}/edit">
+                            <i class="bi-pencil"></i>
+                        </a>
 
-                            <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
-                                data-bs-target="#deleteConfirmationModal"
-                                wire:click="deleteConfirmation({{ $address->id }})">
-                                <i class="bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
+                        {{--
+                                                <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteConfirmationModal"
+                                                        wire:click="deleteConfirmation({{ $address->id }})">
+                                                    <i class="bi-trash"></i>
+                                                </button>
+                        --}}
+                        <button class="btn btn-outline-danger" style="border: none;"
+                                wire:click="setAddressToBeDeleted({{ $address }})"
+                                @click="showModal = true">
+                            <i class="bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
+
+    <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
+         x-show="showModal" x-cloak x-transition.opacity>
+    </div>
+    <div x-show="showModal" @click.away="showModal=false" x-cloak class="card confirmation-modal-card bg-white"
+         x-transition>
+        <div class="card-body p-4">
+            @if($selectedAddress)
+                <div class="d-flex flex-column gap-3 justify-content-start">
+                    <h3 class="card-title text-danger">Diese Adresse wird unwiederruflich gelöscht: </h3>
+                    <x-delivery-address :address="$selectedAddress"></x-delivery-address>
+                </div>
+                <form class="d-flex justify-content-end gap-3" method="POST"
+                      action="/addresses/{{ $selectedAddress['id'] }}">
+                    @csrf
+                    @method('DELETE')
+
+                    <a @click="showModal = false" class="btn btn-secondary border-0">
+                        Abbrechen
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        Löschen
+                    </button>
+                </form>
+            @else
+                <h5 class="card-title btn-danger">Etwas ist Schief gelaufen!</h5>
+            @endif
+        </div>
+    </div>
 
     <div class="d-flex justify-content-between align-items-center mx-4">
         {{ $addresses->links() }}
