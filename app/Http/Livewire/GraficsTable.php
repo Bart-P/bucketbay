@@ -18,7 +18,7 @@ class GraficsTable extends Component
 
     public int $itemsPerPage = 10;
     public string $search = '';
-    public int $selectedImageId = 0;
+    public Grafic $graficToBeDeleted;
     protected string $paginationTheme = 'bootstrap';
     private CartService $cartService;
 
@@ -42,9 +42,9 @@ class GraficsTable extends Component
         return view('livewire.grafics-table', ['grafics' => Grafic::search($this->search)->latest('updated_at')->paginate($this->itemsPerPage)]);
     }
 
-    public function deleteConfirmation($imageId)
+    public function setGraficToBeDeleted(Grafic $grafic)
     {
-        $this->selectedImageId = $imageId;
+        $this->graficToBeDeleted = $grafic;
     }
 
     public function downloadFile(string $fileName): StreamedResponse

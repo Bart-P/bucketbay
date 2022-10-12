@@ -43,36 +43,38 @@
     </div>
 
     <!-- Delete Confirmation Grafics Modal -->
-    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
-         aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        Grafik Löschen?
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    Soll die Grafik mit der ID {{ $selectedImageId }} unwiederruflich gelöscht werden?
-                </div>
-
-                <form method="POST" action="/grafics/{{ $selectedImageId }}">
-                    @csrf
-                    @method('DELETE')
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Abbrechen
-                        </button>
-
-                        <button type="submit" class="btn  btn-danger">
-                            Löschen
-                        </button>
+    {{--
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+             aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Grafik Löschen?
+                        </h5>
                     </div>
-                </form>
+                    <div class="modal-body">
+                        Soll die Grafik mit der ID {{ $selectedImageId }} unwiederruflich gelöscht werden?
+                    </div>
 
+                    <form method="POST" action="/grafics/{{ $selectedImageId }}">
+                        @csrf
+                        @method('DELETE')
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Abbrechen
+                            </button>
+
+                            <button type="submit" class="btn  btn-danger">
+                                Löschen
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-        </div>
-    </div>
+        </div
+    --}}
 
     <table class="table table-hover">
         <thead>
@@ -128,9 +130,9 @@
                                 wire:click="downloadFile('{{ $grafic->file }}')"><i class="bi-download"></i>
                         </button>
 
-                        <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
-                                data-bs-target="#deleteConfirmationModal"
-                                wire:click="deleteConfirmation({{ $grafic->id }})">
+                        <button class="btn btn-outline-danger" style="border: none;"
+                                wire:click="setGraficToBeDeleted({{ $grafic }})"
+                                @click="showModal=true">
                             <i class="bi-trash"></i>
                         </button>
                     </div>
@@ -139,6 +141,58 @@
         @endforeach
         </tbody>
     </table>
+
+    <!-- Delete Confirmation Modal -->
+    <div x-data>
+        <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
+             x-show="showModal" x-cloak x-transition.opacity>
+        </div>
+
+        <div x-show="showModal" @click.away="showModal=false" x-cloak class="card confirmation-modal-card bg-white"
+             x-transition>
+            <div class="card-body p-4">
+                @if($graficToBeDeleted)
+                    <div class="d-flex flex-column gap-3 justify-content-start">
+                        <h3 class="card-title text-danger">Diese Grafikdatei wird unwiederruflich gelöscht: </h3>
+                        <table class="table">
+                            <tr class="align-middle justify-content-center">
+                                <td><img src="{{ asset('storage/grafics/' . $graficToBeDeleted['file']) }}" alt=""
+                                         class="product-image-sm"></td>
+                                <td>
+                                    id: {{ $graficToBeDeleted['id'] }}
+                                </td>
+                                <td>
+                                    name: {{ $graficToBeDeleted['name'] }}
+                                </td>
+                                <td>
+                                    typ: {{ $graficToBeDeleted['type'] }}
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <form class="d-flex justify-content-end gap-3" method="POST"
+                          action="/grafics/{{ $graficToBeDeleted['id'] }}">
+                        @csrf
+                        @method('DELETE')
+
+                        <a @click="showModal = false" class="btn btn-secondary border-0">
+                            Abbrechen
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            Löschen
+                        </button>
+                    </form>
+                @else
+                    <h5 class="card-title btn-danger">Etwas ist Schief gelaufen!</h5>
+                    <a @click="showModal = false" class="btn btn-secondary border-0 ms-auto mt-3">
+                        Schließen
+                    </a>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mx-4">
         {{ $grafics->links() }}
         <div class="mb-3">
