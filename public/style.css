@@ -11,7 +11,8 @@
 .notificationWrapper {
     position: fixed;
     top: 80px;
-    right: 15px;
+    right: 50%;
+    transform: translateX(50%);
     max-width: 300px;
 }
 
