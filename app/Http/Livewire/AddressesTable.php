@@ -46,10 +46,4 @@ class AddressesTable extends Component
         session(['shopping-cart.delivery-address-id' => $address_id]);
         $this->emit('notifySuccess', 'Lieferadresse gesetzt');
     }
-
-    public function deleteAddress(Address $address)
-    {
-        // TODO write the delete logic - if address is selected in cart it should be deleted from cart..
-    }
-
 }
