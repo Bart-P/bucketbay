@@ -88,7 +88,7 @@ class AddressController extends Controller
     {
         if (Address::destroy($address_id)) {
             if ($this->cartService->getAddressId() == $address_id) {
-                $this->cartService->addAddressId(null);
+                $this->cartService->removeAddressId($address_id);
             }
 
             return redirect('/addresses')->with('success_msg', 'Adresse wurde gelöscht!');

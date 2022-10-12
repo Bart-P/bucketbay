@@ -77,6 +77,11 @@ class CartService
         session()->put(self::CART_ADDRESS, $id);
     }
 
+    public function removeAddressId(int $id): void
+    {
+        session()->forget(self::CART_ADDRESS);
+    }
+
     public function getAddressId(): ?int
     {
         return $this->addressIsSet() ? session(self::CART_ADDRESS) : null;
