@@ -10,7 +10,7 @@ use Livewire\Component;
 class NotificationPopUp extends Component
 {
     public $listeners = ['notifySuccess', 'hideNotification'];
-    public $show = false;
+    public $notifyUser = false;
     public $notificationMsg;
     public $notificationType;
 
@@ -23,12 +23,12 @@ class NotificationPopUp extends Component
     {
         $this->notificationType = 'alert-success';
         $this->notificationMsg = $msg;
-        $this->show = true;
+        $this->notifyUser = true;
         $this->render();
     }
 
     public function hideNotification()
     {
-        $this->show = false;
+        $this->notifyUser = false;
     }
 }
