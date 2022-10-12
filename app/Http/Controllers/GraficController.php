@@ -17,12 +17,10 @@ class GraficController extends Controller
     {
         $fileName = request()->file('file')->store('public/grafics');
         if ($fileName && auth()->user()->id) {
-            $form_fields = request()->validate([
-                'name' => ['required', Rule::unique('grafics', 'name')],
-            ]);
+            $form_fields = request()->validate(['name' => ['required', Rule::unique('grafics', 'name')],]);
 
             $fileSizeInBytes = request()->file('file')->getSize();
-            $fileSizeInMb = round($fileSizeInBytes/1000000, 2, PHP_ROUND_HALF_UP);
+            $fileSizeInMb = round($fileSizeInBytes / 1000000, 2, PHP_ROUND_HALF_UP);
 
             $form_fields['user_id'] = auth()->user()->id;
             $fileNameArray = explode('/', $fileName);
@@ -38,22 +36,27 @@ class GraficController extends Controller
         return redirect('/grafics')->with('failed_msg', 'Datei wurde konnte nicht Hochgeladen werden!');
     }
 
-    public function destroy($selectedImageId)
+    public function destroy($graficId)
     {
-        $fileName = Grafic::find($selectedImageId)->value('file');
-        if (File::delete('storage/grafics/' . $fileName)) {
+        $grafic = Grafic::find($graficId);
+        $fileName = $grafic['file'];
+        if (file_exists('storage/grafics/' . $fileName)) {
             //TODO remove from cart if deleted image is currently in cart
-            Grafic::destroy($selectedImageId);
+            File::delete('storage/grafics/' . $fileName);
+            Grafic::destroy($graficId);
             return redirect('/grafics')->with('success_msg', 'Die datei wurde gelöscht!');
+        } else {
+            if ($grafic) {
+                Grafic::destroy($graficId);
+                return redirect('/grafics')->with('success_msg', 'Die datei existiert nicht, der Datenbankeintrag wurde gelöscht');
+            }
         };
         return redirect('/grafics')->with('failed_msg', 'Datei konnte nicht gelöscht werden!');
     }
 
     public function update(Grafic $grafic)
     {
-        $grafic_fields = request()->validate([
-            'name' => 'required',
-        ]);
+        $grafic_fields = request()->validate(['name' => 'required',]);
 
         $grafic->updateTimestamps();
         if ($grafic->update($grafic_fields)) {
