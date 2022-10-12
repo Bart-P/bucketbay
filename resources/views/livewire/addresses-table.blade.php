@@ -5,25 +5,6 @@
         </a>
     </x-table-controlls-wrapper>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Soll die Adresse mit der ID
-                        {{ $selected_address_id }} unwiederruflich gelöscht werden? </h5>
-                </div>
-
-                <form class="modal-footer" action="/addresses/{{ $selected_address_id }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-danger">Löschen</button>
-                </form>
-            </div>
-        </div>
-    </div>
     <table class="table table-hover table-responsive">
         <thead>
         <tr>
@@ -77,6 +58,7 @@
         </tbody>
     </table>
 
+    <!-- Delete Confirmation Modal -->
     <div x-data>
         <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
              x-show="showModal" x-cloak x-transition.opacity>
@@ -112,6 +94,7 @@
         </div>
     </div>
 
+    <!-- Pagination -->
     <div class="d-flex justify-content-between align-items-center mx-4">
         {{ $addresses->links() }}
         <div class="mb-3">
