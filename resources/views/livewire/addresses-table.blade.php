@@ -54,24 +54,17 @@
                 <td>{{ $address->country }}</td>
                 <td style="">
                     <div class="d-flex justify-content-end gap-2">
-                        <button wire:click="setDeliveryAddressInCart({{ $address->id }})"
-                                class="btn {{ session('shopping-cart.delivery-address-id') == $address->id ? 'btn-success' : 'btn-outline-success' }}"
-                                style="border: none;">
+                        <a wire:click="setDeliveryAddressInCart({{ $address->id }})"
+                           class="btn {{ session('shopping-cart.delivery-address-id') == $address->id ? 'btn-success' : 'btn-outline-success' }}"
+                           style="border: none;">
                             <i class="bi-basket3-fill"></i>
-                        </button>
+                        </a>
 
                         <a class="btn btn-outline-primary" style="border: none;"
                            href="/addresses/{{ $address->id }}/edit">
                             <i class="bi-pencil"></i>
                         </a>
 
-                        {{--
-                                                <button class="btn btn-outline-danger" style="border: none;" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteConfirmationModal"
-                                                        wire:click="deleteConfirmation({{ $address->id }})">
-                                                    <i class="bi-trash"></i>
-                                                </button>
-                        --}}
                         <button class="btn btn-outline-danger" style="border: none;"
                                 wire:click="setAddressToBeDeleted({{ $address }})"
                                 @click="showModal = true">
@@ -84,32 +77,38 @@
         </tbody>
     </table>
 
-    <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
-         x-show="showModal" x-cloak x-transition.opacity>
-    </div>
-    <div x-show="showModal" @click.away="showModal=false" x-cloak class="card confirmation-modal-card bg-white"
-         x-transition>
-        <div class="card-body p-4">
-            @if($selectedAddress)
-                <div class="d-flex flex-column gap-3 justify-content-start">
-                    <h3 class="card-title text-danger">Diese Adresse wird unwiederruflich gelöscht: </h3>
-                    <x-delivery-address :address="$selectedAddress"></x-delivery-address>
-                </div>
-                <form class="d-flex justify-content-end gap-3" method="POST"
-                      action="/addresses/{{ $selectedAddress['id'] }}">
-                    @csrf
-                    @method('DELETE')
+    <div x-data>
+        <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
+             x-show="showModal" x-cloak x-transition.opacity>
+        </div>
 
-                    <a @click="showModal = false" class="btn btn-secondary border-0">
-                        Abbrechen
+        <div x-show="showModal" @click.away="showModal=false" x-cloak class="card confirmation-modal-card bg-white"
+             x-transition>
+            <div class="card-body p-4">
+                @if($selectedAddress)
+                    <div class="d-flex flex-column gap-3 justify-content-start">
+                        <h3 class="card-title text-danger">Diese Adresse wird unwiederruflich gelöscht: </h3>
+                        <x-delivery-address :address="$selectedAddress"></x-delivery-address>
+                    </div>
+                    <form class="d-flex justify-content-end gap-3" method="POST"
+                          action="/addresses/{{ $selectedAddress['id'] }}">
+                        @csrf
+                        @method('DELETE')
+
+                        <a @click="showModal = false" class="btn btn-secondary border-0">
+                            Abbrechen
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            Löschen
+                        </button>
+                    </form>
+                @else
+                    <h5 class="card-title btn-danger">Etwas ist Schief gelaufen!</h5>
+                    <a @click="showModal = false" class="btn btn-secondary border-0 ms-auto mt-3">
+                        Schließen
                     </a>
-                    <button type="submit" class="btn btn-danger">
-                        Löschen
-                    </button>
-                </form>
-            @else
-                <h5 class="card-title btn-danger">Etwas ist Schief gelaufen!</h5>
-            @endif
+                @endif
+            </div>
         </div>
     </div>
 
