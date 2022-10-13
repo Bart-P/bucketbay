@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grafic;
+use App\Services\CartService;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 
 class GraficController extends Controller
 {
+    public CartService $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     public function index()
     {
         return view('grafics.index');
@@ -44,6 +52,7 @@ class GraficController extends Controller
             //TODO remove from cart if deleted image is currently in cart
             File::delete('storage/grafics/' . $fileName);
             Grafic::destroy($graficId);
+            $this->deleteGraficFromAllOrderObjectsInCart($graficId);
             return redirect('/grafics')->with('success_msg', 'Die datei wurde gelöscht!');
         } else {
             if ($grafic) {
@@ -52,6 +61,11 @@ class GraficController extends Controller
             }
         };
         return redirect('/grafics')->with('failed_msg', 'Datei konnte nicht gelöscht werden!');
+    }
+
+    private function deleteGraficFromAllOrderObjectsInCart(int $graficId)
+    {
+        $this->cartService->removeGraficFromAllOrderObjects($graficId);
     }
 
     public function update(Grafic $grafic)

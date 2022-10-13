@@ -165,10 +165,29 @@ class CartService
         }
     }
 
+    public function removeGraficFromAllOrderObjects(int $graficId): void
+    {
+        $orderObjectsInCart = $this->getOrderObjects()->each(function ($orderObject) use ($graficId) {
+            if ($orderObject['grafics']) {
+                $newGrafics = [];
+                foreach ($orderObject['grafics'] as $currentGraficId) {
+                    if ($currentGraficId !== $graficId) {
+                        $newGrafics[] = $currentGraficId;
+                    }
+                }
+                $orderObject['grafics'] = $newGrafics;
+            }
+        });
+
+        session()->put(self::CART_ORDER_OBJECTS, $orderObjectsInCart);
+    }
+
     public function updateOrderObject(int $orderObjectKey, OrderObject $newOrderObject): void
     {
         $orderObjects = collect(session(self::CART_ORDER_OBJECTS));
         $orderObjects->put($orderObjectKey, $newOrderObject);
         session()->put(self::CART_ORDER_OBJECTS, $orderObjects);
     }
+
+
 }
