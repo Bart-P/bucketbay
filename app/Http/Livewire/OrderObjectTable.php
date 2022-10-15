@@ -35,7 +35,6 @@ class OrderObjectTable extends Component
 
     public function render(): Factory|View|Application
     {
-        // TODO items DB is now querried twice, once 1 line below and once through refreshOrderObjects method, this should be optimized
         $productsInCart = $this->productService->updateProductQuantities(Product::findMany($this->cartService->getProducts()->keys()));
         return view('livewire.order-object-table', ['products' => $productsInCart,]);
     }
@@ -67,6 +66,12 @@ class OrderObjectTable extends Component
     {
         $this->cartService->removeOrderObject($key);
         $this->emit('orderObjectsChanged');
+    }
+
+    public function getFormatedFinalPrice(int $productPrice, int $printAmount = 0): float
+    {
+        // TODO the 499 should come from DB and not be hardcoded.. It is the price for 1 print.
+        return ($printAmount * 499 + $productPrice) / 100;
     }
 
     public function updateQuantity($orderObjectKey)

@@ -189,5 +189,15 @@ class CartService
         session()->put(self::CART_ORDER_OBJECTS, $orderObjects);
     }
 
+    public function calculatePrintAmount($orderObjects): int
+    {
+        $printAmount = 0;
+        foreach ($orderObjects as $orderObject) {
+            if ($orderObject['grafics']) {
+                $printAmount += count($orderObject['grafics']);
+            }
+        }
 
+        return $printAmount;
+    }
 }

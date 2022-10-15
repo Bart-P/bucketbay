@@ -20,7 +20,10 @@
                     </b>
                 </td>
                 <td class="p-3 align-middle text-center">
-                    {{ $this->productService->formatCurrency($products->find($orderObject['productId'])->price_in_cent) }}
+                    {{ $this->getFormatedFinalPrice($products->find($orderObject['productId'])->price_in_cent, count($orderObject['grafics'])) }}
+                    {{--
+                                        {{ $this->productService->formatCurrency($products->find($orderObject['productId'])->price_in_cent) }}
+                    --}}
                 </td>
                 <td class="text-center align-middle">
                     <img src="{{ asset('images/items/' . $products->find($orderObject['productId'])->image) }}"
