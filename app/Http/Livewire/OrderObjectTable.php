@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Grafic;
 use App\Models\Product;
 use App\Services\CartService;
 use App\Services\ProductService;
@@ -21,16 +20,18 @@ class OrderObjectTable extends Component
 
     public Collection $orderObjects;
     public $newQuantities = [];
-    public $grafics;
-    public $selectedOrderObjectKey;
-    public $selectedGraficId;
+    public $grafics = [];
+    public int $selectedOrderObjectKey;
+    public int $selectedGraficId;
+    public int $priceForPrint;
 
     public function boot(CartService $cartService, ProductService $productService)
     {
         $this->cartService = $cartService;
         $this->productService = $productService;
         $this->orderObjectsChanged();
-        $this->grafics = Grafic::latest('updated_at')->get();
+        $this->grafics = auth()->user()->grafics()->get();
+        $this->priceForPrint = Product::find(1, ['price_in_cent'])->value('price_in_cent');
     }
 
     public function render(): Factory|View|Application
@@ -70,8 +71,7 @@ class OrderObjectTable extends Component
 
     public function getFormatedFinalPrice(int $productPrice, int $printAmount = 0): float
     {
-        // TODO the 499 should come from DB and not be hardcoded.. It is the price for 1 print.
-        return ($printAmount * 499 + $productPrice) / 100;
+        return ($printAmount * $this->priceForPrint + $productPrice) / 100;
     }
 
     public function updateQuantity($orderObjectKey)
