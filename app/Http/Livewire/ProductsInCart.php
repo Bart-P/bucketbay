@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product;
 use App\Services\CartService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -12,7 +11,10 @@ use Livewire\Component;
 class ProductsInCart extends Component
 {
     private CartService $cartService;
-    protected $listeners = ['orderObjectsDeleted' => 'render'];
+
+    protected $listeners = ['orderObjectsDeleted'];
+
+    public $products;
 
     public function boot(CartService $cartService): void
     {
@@ -21,15 +23,13 @@ class ProductsInCart extends Component
 
     public function render(): Factory|View|Application
     {
-        $productsInCart = $this->cartService->getProducts();
-        return view('livewire.products-in-cart', ['products' => Product::find($productsInCart->keys(), ['id',
-                                                                                                        'name',
-                                                                                                        'printable'])]);
+        return view('livewire.products-in-cart', ['products' => $this->products]);
     }
 
     public function deleteProductFromCart($id): void
     {
         $this->cartService->removeProduct($id);
+        $this->emit('removedProductFromCart');
         $this->emit('orderObjectsChanged');
         $this->emit('orderObjectsDeleted');
     }
@@ -41,12 +41,12 @@ class ProductsInCart extends Component
         $this->emit('orderObjectsChanged');
     }
 
-    public function removeProductAndAssociatedOrderObjects(int $productId)
-    {
-        $this->cartService->removeProductFromCart($productId);
-        $this->emit('notifySuccess', 'Produkt aus dem Warenkorb entfernt.');
-        $this->emit('orderObjectsChanged');
-    }
+    /*   public function removeProductAndAssociatedOrderObjects(int $productId)
+       {
+           $this->cartService->removeProductFromCart($productId);
+           $this->emit('notifySuccess', 'Produkt aus dem Warenkorb entfernt.');
+           $this->emit('orderObjectsChanged');
+       }*/
 
     public function productIsInOrderObjects(int $productId): bool
     {
