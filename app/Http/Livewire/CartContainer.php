@@ -5,22 +5,35 @@ namespace App\Http\Livewire;
 use App\Models\Address;
 use App\Models\Product;
 use App\Services\CartService;
+use App\Services\ProductService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class CartContainer extends Component
 {
-    // TODO products-in-cart-table does not refresh when an orderObject is deleted, reproduce by adding and removing "Halterung Einzeln"
-    // TODO all functionality from ProductsInCart should be moved here
     // TODO all functionality from OrderObjectTable should be moved here, and OrderObjectTable should be a simple laravel component
 
     private CartService $cartService;
+    private ProductService $productService;
 
-    public $address;
-    public $productsInCart;
+    protected $listeners = ['removedProductFromCart' => 'refreshProducts', 'orderObjectsChanged'];
 
-    public function boot(CartService $cartService)
+    public Address|null $address;
+    public Collection $productsInCart;
+    public Collection $orderObjects;
+    public $newQuantities = [];
+    public $grafics = [];
+    public int $selectedOrderObjectKey;
+    public int $selectedGraficId;
+    public int $priceForPrint;
+
+    public function boot(CartService $cartService, ProductService $productService)
     {
         $this->cartService = $cartService;
+        $this->productService = $productService;
     }
 
     public function mount()
@@ -29,7 +42,7 @@ class CartContainer extends Component
         $this->refreshProducts();
     }
 
-    public function render()
+    public function render(): Factory|View|Application
     {
         return view('livewire.cart-container');
     }
@@ -65,4 +78,23 @@ class CartContainer extends Component
         }
         return false;
     }
+
+    public function orderObjectsChanged()
+    {
+        $this->refreshOrderObjects();
+        $this->refreshNewQuantities();
+    }
+
+    public function refreshOrderObjects()
+    {
+        $this->orderObjects = $this->cartService->getOrderObjects();
+    }
+
+    private function refreshNewQuantities()
+    {
+        foreach ($this->orderObjects as $orderKey => $orderObject) {
+            $this->newQuantities[$orderKey] = $orderObject['quantity'];
+        }
+    }
+
 }
