@@ -67,6 +67,7 @@ class OrderObjectTable extends Component
     {
         $this->cartService->removeOrderObject($key);
         $this->emit('orderObjectsChanged');
+        $this->emit('removedProductFromCart');
     }
 
     public function getFormatedFinalPrice(int $productPrice, int $printAmount = 0): float
