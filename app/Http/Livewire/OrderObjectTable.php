@@ -89,6 +89,7 @@ class OrderObjectTable extends Component
     public function selectGraficForOrderObject(int $key)
     {
         $this->selectedOrderObjectKey = $key;
+        $this->emit('showSelectGraficsModal', $key);
     }
 
     public function selectGrafic($id)

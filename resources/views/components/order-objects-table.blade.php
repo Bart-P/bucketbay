@@ -93,30 +93,31 @@
             @endforeach
         @endif
     </table>
-
-    <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
-         x-show="showModal" x-cloak x-transition.opacity>
-    </div>
-    <div x-show="showModal" @click.away="showModal=false" x-cloak class="card modal-card bg-white" x-transition>
-        <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title">Grafik auswählen: </h5>
-                <button @click="showModal=false" class="btn btn-sm btn-outline-secondary border-0"><i
-                            class="bi-x-circle"></i>
-                </button>
-            </div>
-            <table class="table table-hover">
-                @foreach($grafics as $grafic)
-                    <tr @click="$wire.selectGrafic({{$grafic['id']}}); showModal = false"
-                        class="align-middle p-2 grafic-select-object">
-                        <td><img class="grafic-preview-sm" src="{{ asset('storage/grafics/' . $grafic['file']) }}"
-                                 alt="">
-                        </td>
-                        <td>{{ $grafic['name'] }}</td>
-                        <td></td>
-                    </tr>
-                @endforeach
-            </table>
+    {{--
+        <div class="modal-overlay w-100 h-100 bg-dark justify-content-center align-items-center"
+             x-show="showModal" x-cloak x-transition.opacity>
         </div>
-    </div>
+        <div x-show="showModal" @click.away="showModal=false" x-cloak class="card modal-card bg-white" x-transition>
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title">Grafik auswählen: </h5>
+                    <button @click="showModal=false" class="btn btn-sm btn-outline-secondary border-0"><i
+                                class="bi-x-circle"></i>
+                    </button>
+                </div>
+                <table class="table table-hover">
+                    @foreach($grafics as $grafic)
+                        <tr @click="$wire.selectGrafic({{$grafic['id']}}); showModal = false"
+                            class="align-middle p-2 grafic-select-object">
+                            <td><img class="grafic-preview-sm" src="{{ asset('storage/grafics/' . $grafic['file']) }}"
+                                     alt="">
+                            </td>
+                            <td>{{ $grafic['name'] }}</td>
+                            <td></td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+    --}}
 </div>
