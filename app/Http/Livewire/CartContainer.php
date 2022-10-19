@@ -19,13 +19,14 @@ class CartContainer extends Component
     private CartService $cartService;
     private ProductService $productService;
 
-    protected $listeners = ['removedProductFromCart' => 'refreshProducts', 'orderObjectsChanged'];
+    protected $listeners = ['removedProductFromCart' => 'refreshProducts',
+                            'orderObjectsChanged'];
 
     public Address|null $address;
+    public Collection $grafics;
     public Collection $productsInCart;
     public Collection $orderObjects;
     public $newQuantities = [];
-    public $grafics = [];
     public int $selectedOrderObjectKey;
     public int $selectedGraficId;
     public int $priceForPrint;
@@ -49,9 +50,7 @@ class CartContainer extends Component
 
     public function refreshProducts()
     {
-        $this->productsInCart = Product::find($this->cartService->getProducts()->keys(), ['id',
-                                                                                          'name',
-                                                                                          'printable']);
+        $this->productsInCart = $this->productService->updateProductQuantities(Product::find($this->cartService->getProducts()->keys()));
     }
 
     public function addProductToOrderObjects($productId)
@@ -96,5 +95,4 @@ class CartContainer extends Component
             $this->newQuantities[$orderKey] = $orderObject['quantity'];
         }
     }
-
 }

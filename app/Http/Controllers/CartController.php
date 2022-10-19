@@ -10,6 +10,6 @@ class CartController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        return view('cart.index');
+        return view('cart.index', ['grafics' => auth()->user()->grafics()->get()]);
     }
 }

@@ -13,14 +13,14 @@ use Livewire\Component;
 
 class OrderObjectTable extends Component
 {
-    protected $listeners = ['orderObjectsChanged'];
+    protected $listeners = ['orderObjectsChanged', 'graficForOrderObjectSelected' => 'selectGrafic'];
 
     private CartService $cartService;
-    private ProductService $productService;
 
     public Collection $orderObjects;
+    public Collection $productsInCart;
     public $newQuantities = [];
-    public $grafics = [];
+    public $grafics;
     public int $selectedOrderObjectKey;
     public int $selectedGraficId;
     public int $priceForPrint;
@@ -28,16 +28,13 @@ class OrderObjectTable extends Component
     public function boot(CartService $cartService, ProductService $productService)
     {
         $this->cartService = $cartService;
-        $this->productService = $productService;
         $this->orderObjectsChanged();
-        $this->grafics = auth()->user()->grafics()->get();
         $this->priceForPrint = Product::find(1, ['price_in_cent'])->value('price_in_cent');
     }
 
     public function render(): Factory|View|Application
     {
-        $productsInCart = $this->productService->updateProductQuantities(Product::findMany($this->cartService->getProducts()->keys()));
-        return view('livewire.order-object-table', ['products' => $productsInCart,]);
+        return view('livewire.order-object-table', ['products' => $this->productsInCart,]);
     }
 
     public function orderObjectsChanged()
