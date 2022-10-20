@@ -89,5 +89,47 @@
                 </td>
             </tr>
         @endforeach
+        <tr>
     </table>
+    <div class="w-100 d-flex justify-content-end gap-3 pt-3 pe-3">
+        <div>
+            <h5 class="text-primary">Zusammenfassung</h5>
+            <table class="table table-borderless">
+                <tr class="">
+                    <td class="">3x Ice Bucket mit Halterung</td>
+                    <td class="text-end">96€</td>
+                </tr>
+                <tr class="">
+                    <td class="">2x Ice Bucket Einzeln</td>
+                    <td class="text-end">44€</td>
+                </tr>
+                <tr class="">
+                    <td class="">1x Halterung Einzeln</td>
+                    <td class="text-end">10€</td>
+                </tr>
+                <tr class="">
+                    <td class="">2x Druckkosten</td>
+                    <td class="text-end">9,98€</td>
+                </tr>
+                <tr class="">
+                    <td class="">1x Versandpauschale</td>
+                    <td class="text-end">9,99€</td>
+                </tr>
+                <tr class="border-top">
+                    <td class="">Gesamt Netto</td>
+                    <td class="text-end">159,98€</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="">Umstatzsteuer 19%</td>
+                    <td class="text-end">41,12€</td>
+                </tr>
+                <tr class="border-bottom fw-bold">
+                    <td class="">Gesamt Brutto</td>
+                    <td class="text-end">200,10€</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
 </div>
