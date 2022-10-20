@@ -13,6 +13,9 @@ use Livewire\Component;
 
 class OrderObjectTable extends Component
 {
+
+    // TODO There is a bug, when amounts are changed the quantity of "Ice Bucket mit Halterung" jumps to zero..
+
     protected $listeners = ['orderObjectsChanged', 'graficForOrderObjectSelected' => 'selectGrafic'];
 
     private CartService $cartService;
