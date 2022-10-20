@@ -64,8 +64,7 @@
              x-show="showModal" x-cloak x-transition.opacity>
         </div>
 
-        <div x-show="showModal" @click.away="showModal=false" x-cloak class="card confirmation-modal-card bg-white"
-             x-transition>
+        <div x-show="showModal" @click.away="showModal=false" x-cloak class="card confirmation-modal-card bg-white">
             <div class="card-body p-4">
                 @if($selectedAddress)
                     <div class="d-flex flex-column gap-3 justify-content-start">
@@ -84,11 +83,6 @@
                             Löschen
                         </button>
                     </form>
-                @else
-                    <h5 class="card-title btn-danger">Etwas ist Schief gelaufen!</h5>
-                    <a @click="showModal = false" class="btn btn-secondary border-0 ms-auto mt-3">
-                        Schließen
-                    </a>
                 @endif
             </div>
         </div>
