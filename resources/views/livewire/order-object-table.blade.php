@@ -21,9 +21,6 @@
                 </td>
                 <td class="p-3 align-middle text-center">
                     {{ $this->getFormatedFinalPrice($products->find($orderObject['productId'])->price_in_cent, count($orderObject['grafics'])) }}
-                    {{--
-                                        {{ $this->productService->formatCurrency($products->find($orderObject['productId'])->price_in_cent) }}
-                    --}}
                 </td>
                 <td class="text-center align-middle">
                     <img src="{{ asset('images/items/' . $products->find($orderObject['productId'])->image) }}"
@@ -94,38 +91,44 @@
     <div class="w-100 d-flex justify-content-end gap-3 pt-3 pe-3">
         <div>
             <h5 class="text-primary">Zusammenfassung</h5>
-            <table class="table table-borderless">
+            <table class="table">
                 <tr class="">
-                    <td class="">3x Ice Bucket mit Halterung</td>
-                    <td class="text-end">96€</td>
+                    <th>Produkt</th>
+                    <th>Menge</th>
+                    <th>Stückpreis</th>
+                    <th>Gesamt</th>
                 </tr>
+
+                @foreach($products as $product)
+                    @if( $this->getQuantitySumOfProductFromOrderObjects($product['id']) > 0)
+                        <tr class="">
+                            <td class="">{{ $product->name }}</td>
+                            <td class="text-end">{{ $this->getQuantitySumOfProductFromOrderObjects($product['id']) }}</td>
+                            <td class="text-end">{{ $product->price_in_cent / 100 }}</td>
+                            <td class="text-end">{{ $this->getPriceSumOfProductFromOrderObjects($product['id']) / 100 }}</td>
+                        </tr>
+                    @endif
+                @endforeach
+                @if( $this->getGraficsQuantitySum() > 0)
+
+                    <tr class="">
+                        <td class=""> Druckkosten</td>
+                        <td class="text-end">{{ $this->getGraficsQuantitySum() }}</td>
+                        <td class="text-end">{{ $this->priceForPrint / 100 }}</td>
+                        <td class="text-end">{{ $this->getFormatedFinalPrice($this->getGraficsPriceSum()) }}</td>
+                    </tr>
+                @endif
                 <tr class="">
-                    <td class="">2x Ice Bucket Einzeln</td>
-                    <td class="text-end">44€</td>
-                </tr>
-                <tr class="">
-                    <td class="">1x Halterung Einzeln</td>
-                    <td class="text-end">10€</td>
-                </tr>
-                <tr class="">
-                    <td class="">2x Druckkosten</td>
-                    <td class="text-end">9,98€</td>
-                </tr>
-                <tr class="">
-                    <td class="">1x Versandpauschale</td>
-                    <td class="text-end">9,99€</td>
+                    <td class="">Versandpauschale</td>
+                    <td class="text-end">1</td>
+                    <td></td>
+                    <td class="text-end">{{ $priceForShipmentInCent / 100}}</td>
                 </tr>
                 <tr class="border-top">
-                    <td class="">Gesamt Netto</td>
-                    <td class="text-end">159,98€</td>
-                </tr>
-                <tr class="border-bottom">
-                    <td class="">Umstatzsteuer 19%</td>
-                    <td class="text-end">41,12€</td>
-                </tr>
-                <tr class="border-bottom fw-bold">
-                    <td class="">Gesamt Brutto</td>
-                    <td class="text-end">200,10€</td>
+                    <td class="fw-bold">Gesamt Netto</td>
+                    <td></td>
+                    <td></td>
+                    <td class="fw-bold text-end">{{ $this->getPriceSumNet() / 100 }}</td>
                 </tr>
             </table>
 

@@ -30,7 +30,7 @@ class ProductService
     public function updateProductQuantities(Collection $products): Collection
     {
         $products->map(function ($product) use ($products) {
-            if ($product['product_list']) {
+            if (isset($product['product_list']) && (!isset($product['quantity_available']) || $product['quantity_available'] === 0)) {
                 $productList = json_decode($product['product_list']);
                 if (count($productList) > 0) {
                     $quantities = Product::find($productList, ['quantity_available'])->pluck('quantity_available')->toArray();

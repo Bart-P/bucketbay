@@ -19,25 +19,31 @@ class OrderObjectTable extends Component
     protected $listeners = ['orderObjectsChanged', 'graficForOrderObjectSelected' => 'selectGrafic'];
 
     private CartService $cartService;
+    private ProductService $productService;
 
     public Collection $orderObjects;
     public Collection $productsInCart;
+    public Collection $productsInCartUpdated;
     public $newQuantities = [];
     public $grafics;
     public int $selectedOrderObjectKey;
     public int $selectedGraficId;
     public int $priceForPrint;
+    public int $priceForShipmentInCent;
 
     public function boot(CartService $cartService, ProductService $productService)
     {
+        $this->priceForShipmentInCent = 999;
+        $this->productService = $productService;
         $this->cartService = $cartService;
         $this->orderObjectsChanged();
-        $this->priceForPrint = Product::find(1, ['price_in_cent'])->value('price_in_cent');
+        $this->priceForPrint = Product::find(1, ['price_in_cent'])['price_in_cent'];
     }
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.order-object-table', ['products' => $this->productsInCart,]);
+        $this->productsInCartUpdated = $this->productService->updateProductQuantities($this->productsInCart);
+        return view('livewire.order-object-table', ['products' => $this->productsInCartUpdated]);
     }
 
     public function orderObjectsChanged()
@@ -73,6 +79,63 @@ class OrderObjectTable extends Component
     public function getFormatedFinalPrice(int $productPrice, int $printAmount = 0): float
     {
         return ($printAmount * $this->priceForPrint + $productPrice) / 100;
+    }
+
+    public function getQuantitySumOfProductFromOrderObjects(int $productId): int
+    {
+        $sum = 0;
+        if (isset($this->productsInCartUpdated)) {
+            foreach ($this->orderObjects as $orderObject) {
+                if ($orderObject['productId'] === $productId) {
+                    $sum += $orderObject['quantity'];
+                }
+            }
+        }
+
+        return $sum;
+    }
+
+    public function getPriceSumOfProductFromOrderObjects(int $productId): int
+    {
+        $sum = 0;
+        if (isset($this->productsInCartUpdated)) {
+            foreach ($this->orderObjects as $orderObject) {
+                if ($orderObject['productId'] === $productId) {
+                    $sum += $this->productsInCartUpdated->find($productId)->price_in_cent * $orderObject['quantity'];
+                }
+            }
+        }
+
+        return $sum;
+    }
+
+    public function getGraficsQuantitySum(): int
+    {
+        $sum = 0;
+
+        foreach ($this->orderObjects as $orderObject) {
+            if (isset($orderObject['grafics'])) {
+                $sum += count($orderObject['grafics']) * $orderObject['quantity'];
+            }
+        }
+
+        return $sum;
+    }
+
+    public function getGraficsPriceSum(): float
+    {
+        return $this->getGraficsQuantitySum() * $this->priceForPrint;
+    }
+
+    public function getPriceSumNet(): int
+    {
+        $sum = $this->getGraficsPriceSum() + $this->priceForShipmentInCent;
+
+        foreach ($this->orderObjects as $orderObject) {
+            $sum += $this->productsInCartUpdated->find($orderObject['productId'])['price_in_cent'] * $orderObject['quantity'];
+        }
+
+        return $sum;
     }
 
     public function updateQuantity($orderObjectKey)
