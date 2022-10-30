@@ -40,4 +40,10 @@ class ProductService
         });
         return $products;
     }
+
+    public function getPriceForPrint(): int
+    {
+        return Product::find(1, ['price_in_cent'])['price_in_cent'];
+
+    }
 }
