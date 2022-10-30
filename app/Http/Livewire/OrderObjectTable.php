@@ -14,8 +14,6 @@ use Livewire\Component;
 class OrderObjectTable extends Component
 {
 
-    // TODO There is a bug, when amounts are changed the quantity of "Ice Bucket mit Halterung" jumps to zero..
-
     protected $listeners = ['orderObjectsChanged', 'graficForOrderObjectSelected' => 'selectGrafic'];
 
     private CartService $cartService;
@@ -37,7 +35,7 @@ class OrderObjectTable extends Component
         $this->productService = $productService;
         $this->cartService = $cartService;
         $this->orderObjectsChanged();
-        $this->priceForPrint = Product::find(1, ['price_in_cent'])['price_in_cent'];
+        $this->priceForPrint = $productService->getPriceForPrint();
     }
 
     public function render(): Factory|View|Application
@@ -64,14 +62,14 @@ class OrderObjectTable extends Component
         }
     }
 
-    public function getGraficPath(int $id): string
+    public function getGraficPath(int $productId): string
     {
-        return asset(asset('/images/items/' . Product::first($id)->image));
+        return asset(asset('/images/items/' . Product::first($productId)->image));
     }
 
-    public function removeOrderObjectFromCart(int $key): void
+    public function removeOrderObjectFromCart(int $orderObjectKey): void
     {
-        $this->cartService->removeOrderObject($key);
+        $this->cartService->removeOrderObject($orderObjectKey);
         $this->emit('orderObjectsChanged');
         $this->emit('removedProductFromCart');
     }
