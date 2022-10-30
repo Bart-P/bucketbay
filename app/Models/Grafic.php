@@ -28,4 +28,9 @@ class Grafic extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function orderObjects()
+    {
+        return $this->hasMany(OrderObject::class);
+    }
 }

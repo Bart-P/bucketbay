@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class OrderObject extends Model
 {
@@ -16,4 +18,19 @@ class OrderObject extends Model
     protected $fillable = ['productId',
                            'grafics',
                            'quantity'];
+
+    public function order(): HasOne
+    {
+        return $this->hasOne(Order::class);
+    }
+
+    public function grafics(): HasMany
+    {
+        return $this->hasMany(Grafic::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
 }
