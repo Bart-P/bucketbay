@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Address;
 use App\Models\Grafic;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -79,5 +80,7 @@ class DatabaseSeeder extends Seeder
                          'price_in_cent'      => 1000,
                          'quantity_available' => 150,
                          'external_id'        => '']);
+
+        Order::factory(20)->create();
     }
 }
