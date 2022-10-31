@@ -5,12 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class () extends Migration {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+
+    public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
@@ -21,18 +17,13 @@ return new class () extends Migration {
             $table->boolean('show');
             $table->string('external_id')->nullable();
             $table->json('product_list')->nullable();
-            $table->bigInteger('price_in_cent');
-            $table->bigInteger('quantity_available');
+            $table->integer('price_in_cent');
+            $table->integer('quantity_available');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('items');
     }
