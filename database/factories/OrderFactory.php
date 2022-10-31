@@ -6,15 +6,16 @@ use App\Enums\OrderStatusEnum;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
- */
 class OrderFactory extends Factory
 {
     public function definition(): array
     {
-        return ['status'              => OrderStatusEnum::cases()[array_rand(OrderStatusEnum::cases())],
-                'delivery_address_id' => Address::all()->random()->id,
-                'sent_at'             => $this->faker->date(),];
+        $status = OrderStatusEnum::cases()[array_rand(OrderStatusEnum::cases())];
+
+        return ['status'                 => $status,
+                'delivery_address_id'    => Address::all()->random()->id,
+                'print_price_in_cent'    => 599,
+                'shipment_price_in_cent' => 999,
+                'sent_at'                => $status == OrderStatusEnum::OPEN ? null : $this->faker->dateTimeBetween('-3 months', '-1 days')];
     }
 }

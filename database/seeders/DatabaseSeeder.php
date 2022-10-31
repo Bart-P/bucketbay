@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Address;
 use App\Models\Grafic;
 use App\Models\Order;
+use App\Models\OrderObject;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -12,20 +13,8 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         User::create(['name'              => 'Bartek',
                       'email'             => 'bar-p@wp.pl',
                       'password'          => bcrypt('asdf'),
@@ -81,6 +70,24 @@ class DatabaseSeeder extends Seeder
                          'quantity_available' => 150,
                          'external_id'        => '']);
 
-        Order::factory(20)->create();
+        // create orders and add one order object to each order
+        Order::factory(20)->create()->each(function ($order) {
+            $products = Product::all();
+            $productId = $products->pluck('id')->toArray()[rand(0, count($products) - 1)];
+            if ($productId === 1) $productId = 2;
+            $graficsLength = Grafic::count();
+            $graficsArr = [];
+            for ($i = 0; $i < rand(1, 2); $i++) {
+                $graficsArr[] = rand(1, $graficsLength);
+            }
+
+            OrderObject::create(['order_id'      => $order->id,
+                                 'product_id'    => $productId,
+                                 'product_price' => Product::find($productId, 'price_in_cent')['price_in_cent'],
+                                 'grafics'       => rand(0, 3) ? json_encode($graficsArr) : null,
+                                 'quantity'      => rand(1, 15),]);
+        });
+
+        OrderObject::factory(50)->create();
     }
 }

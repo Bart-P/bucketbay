@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->string('status');
             $table->integer('delivery_address_id');
             $table->date('sent_at')->nullable();
+            $table->integer('print_price_in_cent')->startingValue(0);
+            $table->integer('shipment_price_in_cent')->startingValue(0);
             $table->timestamps();
         });
     }
