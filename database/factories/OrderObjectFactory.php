@@ -15,8 +15,8 @@ class OrderObjectFactory extends Factory
         $productId = $this->faker->randomElement($products->pluck('id')->toArray());
         if ($productId === 1) $productId = 2;
         $productPrice = $products[$productId - 1]['price_in_cent'];
-        $grafics = $this->faker->boolean() && $productId != 4 ? [$this->faker->randomElement(Grafic::get('id')->values())->id] : null;
-        if ($grafics && count($grafics) && $this->faker->boolean()) {
+        $grafics = $this->faker->boolean() && $productId != 4 ? [$this->faker->randomElement(Grafic::get('id')->values())->id] : [];
+        if (!empty($grafics) && count($grafics) && $this->faker->boolean()) {
             $grafics[] = $this->faker->randomElement(Grafic::get('id')->values())->id;
         };
         return ['order_id'      => $this->faker->randomElement(Order::get('id')->values()),
