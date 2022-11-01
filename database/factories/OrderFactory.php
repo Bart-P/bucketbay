@@ -12,10 +12,13 @@ class OrderFactory extends Factory
     {
         $status = OrderStatusEnum::cases()[array_rand(OrderStatusEnum::cases())];
 
-        return ['status'                 => $status,
-                'delivery_address_id'    => Address::all()->random()->id,
-                'print_price_in_cent'    => 599,
-                'shipment_price_in_cent' => 999,
-                'sent_at'                => $status == OrderStatusEnum::OPEN ? null : $this->faker->dateTimeBetween('-3 months', '-1 days')];
+        return [
+            'user_id'                => 1,
+            'status'                 => $status,
+            'delivery_address_id'    => Address::whereUserId(1)->get()->random()->id,
+            'print_price_in_cent'    => 599,
+            'shipment_price_in_cent' => 999,
+            'sent_at'                => $status == OrderStatusEnum::OPEN ? null : $this->faker->dateTimeBetween('-3 months', '-1 days'),
+        ];
     }
 }
