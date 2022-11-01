@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
                          'printable'          => true,
                          'product_list'       => '[2, 3]',
                          'price_in_cent'      => 2599,
-                         'quantity_available' => 150,
+                         'quantity_available' => 73,
                          'external_id'        => '']);
 
         Product::create(['name'               => 'Ice Bucket Einzeln',
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
                          'printable'          => true,
                          'product_list'       => null,
                          'price_in_cent'      => 1599,
-                         'quantity_available' => 150,
+                         'quantity_available' => 110,
                          'external_id'        => '']);
 
         Product::create(['name'               => 'Halterung Einzeln',
@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
                          'printable'          => false,
                          'product_list'       => null,
                          'price_in_cent'      => 1000,
-                         'quantity_available' => 150,
+                         'quantity_available' => 128,
                          'external_id'        => '']);
 
         // create orders and add one order object to each order
@@ -84,10 +84,10 @@ class DatabaseSeeder extends Seeder
             OrderObject::create(['order_id'      => $order->id,
                                  'product_id'    => $productId,
                                  'product_price' => Product::find($productId, 'price_in_cent')['price_in_cent'],
-                                 'grafics'       => rand(0, 3) ? json_encode($graficsArr) : null,
+                                 'grafics'       => rand(0, 3) ? json_encode($graficsArr) : json_encode([]),
                                  'quantity'      => rand(1, 15),]);
         });
 
-        OrderObject::factory(50)->create();
+        OrderObject::factory(30)->create();
     }
 }
