@@ -14,7 +14,7 @@
         @foreach($orders as $order)
             <tr>
                 <td>
-                    <span @class([$this->getPillClass($order->status) . ' rounded-pill py-1 px-2']) class="">{{ $order->status }}</span>
+                    <span @class([$this->getPillClass($order->status), 'rounded-pill py-1 px-2'])>{{ $order->status }}</span>
                 </td>
                 <td>{{ $order->id }}</td>
                 <td>{{ $order->name1 }}</td>
