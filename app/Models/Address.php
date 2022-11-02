@@ -2,18 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @method static whereBelongsTo(Authenticatable|null $user)
- * @method static create(array $form_fields)
- * @method static find(int|null $getAddressId)
- */
 class Address extends Model
 {
     use HasFactory;

@@ -14,16 +14,11 @@ class OrdersTable extends Component
 
     public function boot()
     {
-        $this->orders = Order::all();
+        $this->orders = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')->select('addresses.name1', 'orders.*')->get();
     }
 
     public function render(): Factory|View|Application
     {
         return view('livewire.orders-table');
-    }
-
-    public function getAddressName(int $addressId)
-    {
-        return $addressId;
     }
 }

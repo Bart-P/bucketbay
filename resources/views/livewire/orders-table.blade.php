@@ -15,7 +15,7 @@
             <tr>
                 <td><span class="rounded-pill py-1 px-2 bg-primary text-white">{{ $order->status }}</span></td>
                 <td>{{ $order->id }}</td>
-                <td>{{ $this->getAddressName($order->delivery_address_id)}}</td>
+                <td>{{ $order->name1 }}</td>
                 <td>{{ $order->created_at }}</td>
                 <td>{{ $order->sent_at ? : 'Ausstehend' }}</td>
                 <td class="text-end">
