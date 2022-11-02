@@ -13,7 +13,9 @@
     @if($orders)
         @foreach($orders as $order)
             <tr>
-                <td><span class="rounded-pill py-1 px-2 bg-primary text-white">{{ $order->status }}</span></td>
+                <td>
+                    <span @class([$this->getPillClass($order->status) . ' rounded-pill py-1 px-2']) class="">{{ $order->status }}</span>
+                </td>
                 <td>{{ $order->id }}</td>
                 <td>{{ $order->name1 }}</td>
                 <td>{{ $order->created_at }}</td>
