@@ -12,8 +12,8 @@
             </div>
             <table class="table table-hover">
                 @if($grafics)
-                    @foreach($grafics as $grafic)
-                        <tr @click="$wire.selectGraficsForOrderObject({{$grafic['id']}}); showModal = false"
+                    @foreach($grafics->sortByDesc('updated_at') as $grafic)
+                        <tr @click="$wire.selectGraficsForOrderObject({{ $grafic['id'] }}); showModal = false"
                             class="align-middle p-2 grafic-select-object">
                             <td><img class="grafic-preview-sm" src="{{ asset('storage/grafics/' . $grafic['file']) }}"
                                      alt="">
