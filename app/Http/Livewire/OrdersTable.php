@@ -41,4 +41,24 @@ class OrdersTable extends Component
 
         return $class;
     }
+
+    public function getStatusInDE(string $statusEnum): string
+    {
+        $name = match ($statusEnum) {
+            OrderStatusEnum::OPEN->value       => 'offen',
+            OrderStatusEnum::INPROGRESS->value => 'in bearbeitung',
+            OrderStatusEnum::SENT->value       => 'versendet',
+            OrderStatusEnum::INVOICED->value   => 'rechnung gestellt',
+            OrderStatusEnum::CLOSED->value     => 'geschlossen',
+            OrderStatusEnum::CANCELLED->value  => 'abgebrochen',
+            default                            => '',
+        };;
+        return $name;
+    }
+
+    public function orderChangePossible(string $statusEnum): bool
+    {
+        return OrderStatusEnum::OPEN->value === $statusEnum;
+
+    }
 }
