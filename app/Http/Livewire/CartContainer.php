@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Address;
 use App\Models\Product;
 use App\Services\CartService;
+use App\Services\OrderService;
 use App\Services\ProductService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -14,13 +15,14 @@ use Livewire\Component;
 
 class CartContainer extends Component
 {
-    // TODO all functionality from OrderObjectTable should be moved here, and OrderObjectTable should be a simple laravel component
-
     private CartService $cartService;
     private ProductService $productService;
+    private OrderService $orderService;
 
-    protected $listeners = ['removedProductFromCart' => 'refreshProducts',
-                            'orderObjectsChanged'];
+    protected $listeners = [
+        'removedProductFromCart' => 'refreshProducts',
+        'orderObjectsChanged',
+    ];
 
     public Address|null $address;
     public Collection $grafics;
@@ -30,11 +32,14 @@ class CartContainer extends Component
     public int $selectedOrderObjectKey;
     public int $selectedGraficId;
     public int $priceForPrint;
+    public int $shipmentPrice = 999;
 
-    public function boot(CartService $cartService, ProductService $productService)
+    public function boot(CartService $cartService, ProductService $productService, OrderService $orderService)
     {
         $this->cartService = $cartService;
         $this->productService = $productService;
+        $this->orderService = $orderService;
+        $this->priceForPrint = $productService->getPriceForPrint();
     }
 
     public function mount()
@@ -94,5 +99,10 @@ class CartContainer extends Component
         foreach ($this->orderObjects as $orderKey => $orderObject) {
             $this->newQuantities[$orderKey] = $orderObject['quantity'];
         }
+    }
+
+    public function confirmOrder()
+    {
+        $this->orderService->saveOrder($this->address->id, $this->priceForPrint, $this->shipmentPrice);
     }
 }

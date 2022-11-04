@@ -10,7 +10,7 @@
     </div>
     <hr class="my-4">
     <div class="d-flex w-100 justify-content-center">
-        <button class="btn btn-primary btn-lg" type="submit">
+        <button wire:click="confirmOrder()" class="btn btn-primary btn-lg" type="submit">
             Bestellung auslösen
         </button>
     </div>

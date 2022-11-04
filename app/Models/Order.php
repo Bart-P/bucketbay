@@ -15,6 +15,20 @@ class Order extends Model
 {
     use HasFactory;
 
+    public int $user_id;
+    public string $status;
+    public int $delivery_address_id;
+    public int $print_price_in_cent;
+    public int $shipment_price_in_cent;
+
+    protected $fillable = [
+        'user_id',
+        'delivery_address_id',
+        'print_price_in_cent',
+        'shipment_price_in_cent',
+        'status',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
