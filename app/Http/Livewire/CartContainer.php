@@ -40,11 +40,11 @@ class CartContainer extends Component
         $this->productService = $productService;
         $this->orderService = $orderService;
         $this->priceForPrint = $productService->getPriceForPrint();
+        $this->address = Address::find($this->cartService->getAddressId());
     }
 
     public function mount()
     {
-        $this->address = Address::find($this->cartService->getAddressId());
         $this->refreshProducts();
     }
 
@@ -58,9 +58,9 @@ class CartContainer extends Component
         $this->productsInCart = $this->productService->updateProductQuantities(Product::find($this->cartService->getProducts()->keys()));
     }
 
-    public function addProductToOrderObjects($productId)
+    public function addProductToOrderObjects(int $productId, int $priceInCent)
     {
-        $orderObject = $this->cartService->createOrderObject($productId, [], 1);
+        $orderObject = $this->cartService->createOrderObject($productId, $priceInCent, [], 1);
         $this->cartService->addOrderObject($orderObject);
         $this->emit('orderObjectsChanged');
     }
@@ -76,7 +76,7 @@ class CartContainer extends Component
     public function productIsInOrderObjects(int $productId): bool
     {
         foreach ($this->cartService->getOrderObjects() as $order) {
-            if ($order['productId'] === $productId) {
+            if ($order['product_id'] === $productId) {
                 return true;
             }
         }
@@ -103,6 +103,7 @@ class CartContainer extends Component
 
     public function confirmOrder()
     {
-        $this->orderService->saveOrder($this->address->id, $this->priceForPrint, $this->shipmentPrice);
+        dd($this->cartService->getOrderObjects());
+        $this->orderService->saveOrder($this->address['id'], $this->priceForPrint, $this->shipmentPrice, $this->cartService->getOrderObjects());
     }
 }
