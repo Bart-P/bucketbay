@@ -17,7 +17,7 @@ class CartService
         return session(self::CART_PRODUCTS) ? session(self::CART_PRODUCTS) : collect([]);
     }
 
-    public function addProduct(int $id): void
+    public function addProduct(int $id, int $priceInCent): void
     {
         $cartProducts = session(self::CART_PRODUCTS);
         if ($cartProducts) {
@@ -28,8 +28,8 @@ class CartService
             session()->put(self::CART_PRODUCTS, collect([])->put($id, 1));
         }
 
-        if (!$this->getOrderObjects()->contains('productId', $id)) {
-            $this->addOrderObject($this->createEmptyOrderObject($id));
+        if (!$this->getOrderObjects()->contains('product_id', $id)) {
+            $this->addOrderObject($this->createEmptyOrderObject($id, $priceInCent));
         }
     }
 
@@ -43,7 +43,7 @@ class CartService
         $quantityInCart = 0;
         $currentOrderObjects = $this->getOrderObjects();
         foreach ($currentOrderObjects as $order) {
-            if ($order['productId'] === $productId) {
+            if ($order['product_id'] === $productId) {
                 $quantityInCart += $order['quantity'];
             }
         }
@@ -57,7 +57,7 @@ class CartService
         $keysToRemove = [];
 
         foreach ($orderObjects as $key => $order) {
-            if ($order['productId'] === $productId) {
+            if ($order['product_id'] === $productId) {
                 $orderObjects = $orderObjects->forget($key);
             }
         }
@@ -99,14 +99,24 @@ class CartService
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsCollection);
     }
 
-    public function createEmptyOrderObject(int $productId): OrderObject
+    public function createEmptyOrderObject(int $productId, int $priceInCent): OrderObject
     {
-        return new OrderObject(['productId' => $productId, 'grafics' => [], 'quantity' => 1]);
+        return new OrderObject([
+                                   'product_id'    => $productId,
+                                   'product_price' => $priceInCent,
+                                   'grafics'       => [],
+                                   'quantity'      => 1,
+                               ]);
     }
 
-    public function createOrderObject(int $productId, array $grafics, int $quantity): OrderObject
+    public function createOrderObject(int $productId, int $priceInCent, array $grafics, int $quantity): OrderObject
     {
-        return new OrderObject(['productId' => $productId, 'grafics' => $grafics, 'quantity' => $quantity]);
+        return new OrderObject([
+                                   'product_id'    => $productId,
+                                   'product_price' => $priceInCent,
+                                   'grafics'       => $grafics,
+                                   'quantity'      => $quantity,
+                               ]);
     }
 
     public function updateOrderObjectQuantity($key, $quantity): void
