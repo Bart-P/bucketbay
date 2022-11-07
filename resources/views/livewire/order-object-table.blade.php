@@ -11,7 +11,7 @@
             <th>Verfügbar</th>
             <th></th>
         </tr>
-        @foreach($orderObjects->sortBy('productId') as $key => $orderObject)
+        @foreach($orderObjects->sortBy('product_id') as $key => $orderObject)
 
             <tr>
                 <td class="p-3 align-middle text-center">
@@ -20,16 +20,16 @@
                     </b>
                 </td>
                 <td class="p-3 align-middle text-center">
-                    {{ $this->getFormatedFinalPrice($products->find($orderObject['productId'])->price_in_cent, count($orderObject['grafics'])) }}
+                    {{ $this->getFormatedFinalPrice($products->find($orderObject['product_id'])['price_in_cent'], count($orderObject['grafics'])) }}
                 </td>
                 <td class="text-center align-middle">
-                    <img src="{{ asset('images/items/' . $products->find($orderObject['productId'])->image) }}"
+                    <img src="{{ asset('images/items/' . $products->find($orderObject['product_id'])->image) }}"
                          class="img-fluid product-image-sm" alt="">
                 </td>
                 <td>
                     <div class="d-flex h-100 align-middle align-items-center">
-                        {{ $products->find($orderObject['productId'])->name }}
-                        <span class="ms-2 text-muted fs-6 fst-italic">id: {{ $orderObject['productId'] }}</span>
+                        {{ $products->find($orderObject['product_id'])->name }}
+                        <span class="ms-2 text-muted fs-6 fst-italic">id: {{ $orderObject['product_id'] }}</span>
                     </div>
                 </td>
                 @for($i=0; $i<2; $i++)
@@ -49,7 +49,7 @@
                                                 class="bi-x-circle"></i>
                                     </button>
                                 </div>
-                            @elseif($products->find($orderObject['productId'])->printable)
+                            @elseif($products->find($orderObject['product_id'])->printable)
                                 <button wire:click="selectGraficForOrderObject({{ $key }})"
                                         x-on:click="showModal = true"
                                         class="btn btn-lg btn-outline-primary border-0"><i
@@ -76,7 +76,7 @@
                     </form>
                 </td>
                 <td class="p-3 align-middle text-center">
-                    {{ $products->find($orderObject['productId'])->quantity_available }}
+                    {{ $products->find($orderObject['product_id'])->quantity_available }}
                 </td>
                 <td class="text-center align-middle">
                     <button wire:click="removeOrderObjectFromCart({{ $key }})"
