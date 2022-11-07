@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
+use Illuminate\Support\Collection;
 
 class OrderService
 {
-    public function saveOrder(int $deliveryAddressId, int $printPriceInCent, int $shipmentPriceInCent)
+    public function saveOrder(int $deliveryAddressId, int $printPriceInCent, int $shipmentPriceInCent, Collection $orderObjects): void
     {
         $order = new Order;
 
@@ -17,6 +18,18 @@ class OrderService
         $order['shipment_price_in_cent'] = $shipmentPriceInCent;
         $order['status'] = OrderStatusEnum::OPEN->value;
 
+
         $order->save();
+
+        $this->saveOrderObjects($order['id'], $orderObjects);
+    }
+
+    public function saveOrderObjects(int $orderId, Collection $orderObjects)
+    {
+        $orderObjects->map(function ($orderObject) {
+            $finalOrderObject = collect();
+            dd($orderObject);
+        });
+        dd($orderObjects, $orderId);
     }
 }
