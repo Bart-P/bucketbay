@@ -11,12 +11,16 @@ class OrderObject extends Model
 {
     use HasFactory;
 
+    public int $order_id;
     public int $product_id;
+    public int $product_price;
     public array $grafics;
     public int $quantity;
 
     protected $fillable = [
+        'order_id',
         'product_id',
+        'product_price',
         'grafics',
         'quantity',
     ];
