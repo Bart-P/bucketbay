@@ -14,7 +14,10 @@ use Livewire\Component;
 class OrderObjectTable extends Component
 {
 
-    protected $listeners = ['orderObjectsChanged', 'graficForOrderObjectSelected' => 'selectGrafic'];
+    protected $listeners = [
+        'orderObjectsChanged',
+        'graficForOrderObjectSelected' => 'selectGrafic',
+    ];
 
     private CartService $cartService;
     private ProductService $productService;
@@ -84,7 +87,7 @@ class OrderObjectTable extends Component
         $sum = 0;
         if (isset($this->productsInCartUpdated)) {
             foreach ($this->orderObjects as $orderObject) {
-                if ($orderObject['productId'] === $productId) {
+                if ($orderObject['product_id'] === $productId) {
                     $sum += $orderObject['quantity'];
                 }
             }
@@ -98,7 +101,7 @@ class OrderObjectTable extends Component
         $sum = 0;
         if (isset($this->productsInCartUpdated)) {
             foreach ($this->orderObjects as $orderObject) {
-                if ($orderObject['productId'] === $productId) {
+                if ($orderObject['product_id'] === $productId) {
                     $sum += $this->productsInCartUpdated->find($productId)->price_in_cent * $orderObject['quantity'];
                 }
             }
@@ -130,7 +133,7 @@ class OrderObjectTable extends Component
         $sum = $this->getGraficsPriceSum() + $this->priceForShipmentInCent;
 
         foreach ($this->orderObjects as $orderObject) {
-            $sum += $this->productsInCartUpdated->find($orderObject['productId'])['price_in_cent'] * $orderObject['quantity'];
+            $sum += $this->productsInCartUpdated->find($orderObject['product_id'])['price_in_cent'] * $orderObject['quantity'];
         }
 
         return $sum;
