@@ -26,9 +26,9 @@ class ProductsList extends Component
         return view('livewire.products-list', ['items' => $products]);
     }
 
-    public function addOneProductToCart($id): void
+    public function addOneProductToCart(int $id, int $priceInCent): void
     {
-        $this->cartService->addProduct($id);
+        $this->cartService->addProduct($id, $priceInCent);
     }
 
     public function removeProductFromCart($id): void

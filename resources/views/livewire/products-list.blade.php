@@ -37,7 +37,8 @@
                             </span>
                             @endif
 
-                            <button wire:click="addOneProductToCart({{$item->id}})" type="button"
+                            <button wire:click="addOneProductToCart({{$item->id}}, {{$item->price_in_cent}})"
+                                    type="button"
                                     class="btn {{ $this->productIdIsSetInCart($item->id) ? 'btn-success' : 'btn-outline-success float-end'}}">
                                 <i class="bi-basket3-fill"></i>
                             </button>

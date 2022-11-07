@@ -12,7 +12,7 @@
                                 class="bi-trash"></i>
                     </button>
                     @if($product->printable || !$this->productIsInOrderObjects($product->id))
-                        <button wire:click="addProductToOrderObjects({{ $product->id }})"
+                        <button wire:click="addProductToOrderObjects({{ $product->id }}, {{ $product->price_in_cent }})"
                                 class="btn btn-outline-success border-0 ms-auto">
                             <i class="bi-plus-circle"></i></button>
                     @endif
