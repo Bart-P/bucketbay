@@ -22,6 +22,7 @@ class CartContainer extends Component
     protected $listeners = [
         'removedProductFromCart' => 'refreshProducts',
         'orderObjectsChanged',
+        'resetCart',
     ];
 
     public Address|null $address;
@@ -55,7 +56,11 @@ class CartContainer extends Component
 
     public function refreshProducts()
     {
-        $this->productsInCart = $this->productService->updateProductQuantities(Product::find($this->cartService->getProducts()->keys()));
+        if ($productKeys = Product::find($this->cartService->getProducts()->keys())) {
+            $this->productsInCart = $this->productService->updateProductQuantities($productKeys);
+        } else {
+            $this->productsInCart = collect([]);
+        }
     }
 
     public function addProductToOrderObjects(int $productId, int $priceInCent)
@@ -89,6 +94,13 @@ class CartContainer extends Component
         $this->refreshNewQuantities();
     }
 
+    public function resetCart()
+    {
+        $this->emit('orderObjectsChanged');
+        $this->address = Address::find($this->cartService->getAddressId());
+        $this->refreshProducts();
+    }
+
     public function refreshOrderObjects()
     {
         $this->orderObjects = $this->cartService->getOrderObjects();
@@ -101,9 +113,25 @@ class CartContainer extends Component
         }
     }
 
-    public function confirmOrder()
+    public function confirmOrder(): bool
     {
-        dd($this->cartService->getOrderObjects());
-        $this->orderService->saveOrder($this->address['id'], $this->priceForPrint, $this->shipmentPrice, $this->cartService->getOrderObjects());
+        if (!$this->cartService->getAddressId()) {
+            $this->emit('notifyFailed', 'Keine Adresse gesetzt! Bitte eine Adresse auswählen.');
+            return false;
+        }
+
+        if ($this->orderService->saveOrder($this->address['id'],
+                                           $this->priceForPrint,
+                                           $this->shipmentPrice,
+                                           $this->cartService->getOrderObjects())) {
+
+            $this->emit('notifySuccess', 'Bestellung erfolgreich!');
+
+            $this->emit('resetCart');
+            return true;
+        }
+
+        $this->emit('notifyFailed', 'Bestellung nicht erfolgt!');
+        return false;
     }
 }

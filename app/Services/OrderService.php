@@ -4,12 +4,18 @@ namespace App\Services;
 
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
+use App\Models\OrderObject;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-    public function saveOrder(int $deliveryAddressId, int $printPriceInCent, int $shipmentPriceInCent, Collection $orderObjects): void
+    public function saveOrder(int $deliveryAddressId, int $printPriceInCent, int $shipmentPriceInCent, Collection $orderObjects): bool
     {
+        if (!$deliveryAddressId || count($orderObjects) < 1) {
+            return false;
+        }
+
         $order = new Order;
 
         $order['user_id'] = auth()->user()->id;
@@ -18,18 +24,34 @@ class OrderService
         $order['shipment_price_in_cent'] = $shipmentPriceInCent;
         $order['status'] = OrderStatusEnum::OPEN->value;
 
+        try {
+            DB::transaction(function () use ($orderObjects, $order) {
+                $order->save();
+                $this->saveOrderObjects($order['id'], $orderObjects);
+                session()->forget('shopping-cart');
+            });
 
-        $order->save();
+        }
+        catch (\Exception $e) {
+            return false;
+        }
 
-        $this->saveOrderObjects($order['id'], $orderObjects);
+        return true;
     }
 
-    public function saveOrderObjects(int $orderId, Collection $orderObjects)
+    public function saveOrderObjects(int $orderId, Collection $orderObjects): void
     {
-        $orderObjects->map(function ($orderObject) {
-            $finalOrderObject = collect();
-            dd($orderObject);
+        $orderObjects->each(function ($orderObject) use ($orderId) {
+            $newOrderObject = new OrderObject(
+                [
+                    'order_id'      => $orderId,
+                    'product_id'    => $orderObject['product_id'],
+                    'product_price' => $orderObject['product_price'],
+                    'grafics'       => json_encode($orderObject['grafics']),
+                    'quantity'      => $orderObject['quantity'],
+                ]
+            );
+            $newOrderObject->save();
         });
-        dd($orderObjects, $orderId);
     }
 }
