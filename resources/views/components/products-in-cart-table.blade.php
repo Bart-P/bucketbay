@@ -1,6 +1,9 @@
 <div class="col-md-6 col-lg-6 order-md-last">
     <h4 class="text-primary">Produkte</h4>
     <ul class="list-group mb-3">
+        @if(!$products || count($products) < 1)
+            Keine Produkte ausgewählt
+        @endif
         @foreach($products as $product)
             <li class="list-group-item d-flex justify-content-between lh-sm align-items-center">
                 <div>
