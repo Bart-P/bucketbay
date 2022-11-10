@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Grafic::class);
     }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

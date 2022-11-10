@@ -3,24 +3,35 @@
 namespace App\Http\Livewire;
 
 use App\Enums\OrderStatusEnum;
-use App\Models\Order;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class OrdersTable extends Component
 {
-    public $orders;
+    use WithPagination;
 
-    public function boot()
-    {
-        $this->orders = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')->select('addresses.name1', 'orders.*')->get();
-    }
+    protected string $paginationTheme = 'bootstrap';
+    public int $itemsPerPage = 10;
+
+    public $filterField = 'status';
+    public $filter = '';
+
+    public $searchField = 'addresses.name1';
+    public $search = '';
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.orders-table');
+        $orders = auth()->user()->orders()
+                        ->where($this->filterField, 'like', '%' . $this->filter . '%')
+                        ->join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
+                        ->select('addresses.name1', 'orders.*')
+                        ->where($this->searchField, 'like', '%' . $this->search . '%')
+                        ->orwhere('addresses.id', 'like', $this->search);
+
+        return view('livewire.orders-table', ['orders' => $orders->orderBy('status')->orderBy('created_at', 'DESC')->paginate($this->itemsPerPage)]);
     }
 
     public function getPillClass(string $statusEnum): string
@@ -49,7 +60,7 @@ class OrdersTable extends Component
             OrderStatusEnum::INPROGRESS->value => 'in bearbeitung',
             OrderStatusEnum::SENT->value       => 'versendet',
             OrderStatusEnum::INVOICED->value   => 'rechnung gestellt',
-            OrderStatusEnum::CLOSED->value     => 'geschlossen',
+            OrderStatusEnum::CLOSED->value     => 'bezahlt',
             OrderStatusEnum::CANCELLED->value  => 'abgebrochen',
             default                            => '',
         };;
