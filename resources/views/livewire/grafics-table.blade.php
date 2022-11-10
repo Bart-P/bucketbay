@@ -42,40 +42,6 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Grafics Modal -->
-    {{--
-        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
-             aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            Grafik Löschen?
-                        </h5>
-                    </div>
-                    <div class="modal-body">
-                        Soll die Grafik mit der ID {{ $selectedImageId }} unwiederruflich gelöscht werden?
-                    </div>
-
-                    <form method="POST" action="/grafics/{{ $selectedImageId }}">
-                        @csrf
-                        @method('DELETE')
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                Abbrechen
-                            </button>
-
-                            <button type="submit" class="btn  btn-danger">
-                                Löschen
-                            </button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div
-    --}}
-
     <table class="table table-hover">
         <thead>
         <tr>
