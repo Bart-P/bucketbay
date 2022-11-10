@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static join(string $string, string $string1, string $string2, string $string3)
+ * @method static where(mixed $searchField, string $string, string $string1)
  */
 class Order extends Model
 {
