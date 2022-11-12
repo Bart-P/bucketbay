@@ -28,8 +28,7 @@ class OrdersTable extends Component
                         ->where($this->filterField, 'like', '%' . $this->filter . '%')
                         ->join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
                         ->select('addresses.name1', 'orders.*')
-                        ->where($this->searchField, 'like', '%' . $this->search . '%')
-                        ->orwhere('addresses.id', 'like', $this->search);
+                        ->where($this->searchField, 'like', '%' . $this->search . '%');
 
         return view('livewire.orders-table', ['orders' => $orders->orderBy('status')->orderBy('created_at', 'DESC')->paginate($this->itemsPerPage)]);
     }

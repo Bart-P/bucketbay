@@ -24,7 +24,7 @@ class OrderObjectTable extends Component
 
     public Collection $orderObjects;
     public Collection $productsInCart;
-    public Collection $productsInCartUpdated;
+    public Collection $products;
     public $newQuantities = [];
     public $grafics;
     public int $selectedOrderObjectKey;
@@ -43,8 +43,8 @@ class OrderObjectTable extends Component
 
     public function render(): Factory|View|Application
     {
-        $this->productsInCartUpdated = $this->productService->updateProductQuantities($this->productsInCart);
-        return view('livewire.order-object-table', ['products' => $this->productsInCartUpdated]);
+        $this->products = $this->productService->updateProductQuantities($this->productsInCart);
+        return view('livewire.order-object-table');
     }
 
     public function orderObjectsChanged()
@@ -85,7 +85,7 @@ class OrderObjectTable extends Component
     public function getQuantitySumOfProductFromOrderObjects(int $productId): int
     {
         $sum = 0;
-        if (isset($this->productsInCartUpdated)) {
+        if (isset($this->products)) {
             foreach ($this->orderObjects as $orderObject) {
                 if ($orderObject['product_id'] === $productId) {
                     $sum += $orderObject['quantity'];
@@ -99,10 +99,10 @@ class OrderObjectTable extends Component
     public function getPriceSumOfProductFromOrderObjects(int $productId): int
     {
         $sum = 0;
-        if (isset($this->productsInCartUpdated)) {
+        if (isset($this->products)) {
             foreach ($this->orderObjects as $orderObject) {
                 if ($orderObject['product_id'] === $productId) {
-                    $sum += $this->productsInCartUpdated->find($productId)->price_in_cent * $orderObject['quantity'];
+                    $sum += $this->products->find($productId)->price_in_cent * $orderObject['quantity'];
                 }
             }
         }
@@ -133,7 +133,7 @@ class OrderObjectTable extends Component
         $sum = $this->getGraficsPriceSum() + $this->priceForShipmentInCent;
 
         foreach ($this->orderObjects as $orderObject) {
-            $sum += $this->productsInCartUpdated->find($orderObject['product_id'])['price_in_cent'] * $orderObject['quantity'];
+            $sum += $this->products->find($orderObject['product_id'])['price_in_cent'] * $orderObject['quantity'];
         }
 
         return $sum;

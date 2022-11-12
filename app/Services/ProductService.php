@@ -29,7 +29,7 @@ class ProductService
      */
     public function updateProductQuantities(Collection $products): Collection
     {
-        $products->map(function ($product) use ($products) {
+        $products->map(function ($product) {
             if (isset($product['product_list']) && (!isset($product['quantity_available']) || $product['quantity_available'] === 0)) {
                 $productList = json_decode($product['product_list']);
                 if (count($productList) > 0) {
@@ -44,6 +44,7 @@ class ProductService
     public function getPriceForPrint(): int
     {
         return Product::find(1, ['price_in_cent'])['price_in_cent'];
-
     }
+
+
 }

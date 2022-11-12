@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\OrderObject;
+use App\Models\Product;
 use Illuminate\Support\Collection;
 
 class CartService
@@ -119,14 +120,39 @@ class CartService
                                ]);
     }
 
-    public function updateOrderObjectQuantity($key, $quantity): void
+    public function updateOrderObjectQuantity(int $key, int $quantity): void
     {
+        // TODO this has a logic problem:
+        // if we have several order objects with same product then the available quantity should be a sum of those products.
+        // if the product consists of several products then the highest number should be used
+
         $orderObjectsInCart = collect($this->getOrderObjects());
+
         $objectToUpdate = collect($orderObjectsInCart->get($key));
+        if ($quantity && $quantity > 0) {
+            $quantity += $objectToUpdate['quantity'];
+        }
         $objectToUpdate->put('quantity', $quantity);
         $orderObjectsInCart->put($key, $objectToUpdate);
 
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsInCart);
+
+        $this->updateProductQuantity($objectToUpdate['product_id'], $quantity);
+    }
+
+    public function updateProductQuantity(int $productId, int $quantity): void
+    {
+        $products = $this->getProducts();
+        $productList = json_decode(Product::find($productId, ['product_list'])['product_list']);
+        if ($productList) {
+            foreach ($productList as $productId) {
+                $productsInCart = $products->put($productId, $quantity);
+                session()->put(self::CART_PRODUCTS, $productsInCart);
+            }
+            return;
+        }
+        $productsInCart = $products->put($productId, $quantity);
+        session()->put(self::CART_PRODUCTS, $productsInCart);
     }
 
     public function getOrderObjects(): Collection
