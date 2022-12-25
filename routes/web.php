@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\CartController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\GraficController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -29,8 +29,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::resources([
-        'addresses' => AddressController::class,
-        'grafics' => GraficController::class,
-        'orders' => OrderController::class,
-    ]);
+                         'addresses' => AddressController::class,
+                         'grafics'   => GraficController::class,
+                         'orders'    => OrderController::class,
+                     ]);
 });
