@@ -38,7 +38,6 @@ class ProductService
                 }
             }
         });
-
         return $products;
     }
 
@@ -46,5 +45,6 @@ class ProductService
     {
         return Product::find(1, ['price_in_cent'])['price_in_cent'];
     }
+
 
 }

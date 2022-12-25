@@ -122,40 +122,35 @@ class CartService
 
     public function updateOrderObjectQuantity(int $key, int $quantity): void
     {
+        // TODO this has a logic problem:
+        // if we have several order objects with same product then the available quantity should be a sum of those products.
+        // if the product consists of several products then the highest number should be used
+
         $orderObjectsInCart = collect($this->getOrderObjects());
 
         $objectToUpdate = collect($orderObjectsInCart->get($key));
+        if ($quantity && $quantity > 0) {
+            $quantity += $objectToUpdate['quantity'];
+        }
         $objectToUpdate->put('quantity', $quantity);
         $orderObjectsInCart->put($key, $objectToUpdate);
+
         session()->put(self::CART_ORDER_OBJECTS, $orderObjectsInCart);
 
-        $currentProductInCart = 0;
-        foreach ($orderObjectsInCart as $orderObject) {
-            if ($objectToUpdate['product_id'] === $orderObject['product_id']) {
-                $currentProductInCart += $orderObject['quantity'];
-            }
-        }
-
-        $this->updateProductQuantity($objectToUpdate['product_id'], $currentProductInCart);
+        $this->updateProductQuantity($objectToUpdate['product_id'], $quantity);
     }
 
     public function updateProductQuantity(int $productId, int $quantity): void
     {
-        // TODO - need a way to recalculate all quantities, so products array updates the quantities included in product_list if it is there.
-        // if not there everything is fine.
-        // so orderObjects have to be updated here again? -> logic still lacks..
-
         $products = $this->getProducts();
         $productList = json_decode(Product::find($productId, ['product_list'])['product_list']);
         if ($productList) {
             foreach ($productList as $productId) {
-                // get current quantity in cart if the item is in cart separatelly
-                // if not the parent products quantity should be added to products in cart
-                $this->updateProductQuantity($productId, $quantity);
+                $productsInCart = $products->put($productId, $quantity);
+                session()->put(self::CART_PRODUCTS, $productsInCart);
             }
             return;
         }
-
         $productsInCart = $products->put($productId, $quantity);
         session()->put(self::CART_PRODUCTS, $productsInCart);
     }

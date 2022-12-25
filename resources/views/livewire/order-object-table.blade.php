@@ -78,8 +78,7 @@
                         </form>
                     </td>
                     <td class="p-3 align-middle text-center">
-                        {{ $products->find($orderObject['product_id'])->quantity_available - $this->cartService->getProducts()[$orderObject['product_id']] }}
-                        von
+                        {{ $this->cartService->getProducts()[$orderObject['product_id']] }}
                         {{ $products->find($orderObject['product_id'])->quantity_available }}
                     </td>
                     <td class="text-center align-middle">
